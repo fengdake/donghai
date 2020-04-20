@@ -1,0 +1,550 @@
+<template>
+  <a-modal
+    :visible="modal.visible"
+    :width="modal.width"
+    :height="modal.height"
+    :style="modal.style"
+    :destroyOnClose="destroyOnClose"
+    :footer="null"
+    :title="null"
+    @ok="handleOk"
+    @cancel="handleCancel"
+    cancelText="关闭"
+  >
+    <template>
+      <div :style="persryle">
+        <div class="person_title">
+          <span class="person_titlea">
+            <img class="person_titlea_a" src="../../../assets/wenjia.png" />
+            {{ modal.title }}
+          </span>
+          <img class="person_titleb" @click="guabi" src="../../../assets/chahao.png" />
+        </div>
+				<div class="zhuti">
+						<div class="zhuti_left">
+							<ul class="menu-left">
+								<li
+              class="menu-left-item"
+              v-for="(item,indexa) in biglist"
+              :key="indexa"
+              :class="{common_bg:item.status}"
+              @click="_biglist(indexa)"
+            >{{item.name}}</li>
+							</ul>
+							<dl class="menu-child" v-show="name=='影像资料'">
+                <a-spin :spinning="spinning">
+                <dt  class="dt"><img data-v-618a06bc="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowYTFjOGI3Yi1iYzVkLTAxNDItODY2MC0xYTlkMTM5ZWJlNDkiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODc5NTEyNTZBRUE1MTFFOUI3MjREQzRFM0Y0NkM2OEEiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODc5NTEyNTVBRUE1MTFFOUI3MjREQzRFM0Y0NkM2OEEiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTggKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ZGRiYjk3MWQtZGE5NS1iNTQxLTg3YzUtN2ViY2Q1NjQzNTkwIiBzdFJlZjpkb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6NTRjOGIyN2MtN2Q0Mi0yZTQ0LWFjN2QtZDEwNDI3NDY5MjZhIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+h3hmYAAAAUdJREFUeNpc0r1Kw1AYxvGTNIK2cVAq6CRu4iBIMnsDbupQBAXFwUXxQsSvxStwUtDBCoJ4BUVdHAShmw6iSIlaP+P/xSdwaODHSdPznPe8JwmSJLlxzj2hiQARcvygikvsYwSraNmELhzh2P1f3fjV/bcWnMIcblG30BvuGo1G03VcaZqWGGawgGvsMO8+1JYqmuAHrOIi1nCFDQs47T8QP1BmmMcSLrBtO+L5AONLpHl50Qd/xAzLCp1iC7ajdbzjMCxWp3ROwA5lRduqY5Pnz4zDmMQE4kgV2gT6VWEWB9gl0NKadvwZXu3eQm3YIdQwjRPrgUDmtRlqcXsFeeT9eMQezjoCTq/lU4sHFupFWRWs0ZCtVnQ4dqof6NFHEBahIfVRVdXYq2Ah62sU4zgvenrAGAa1esl7DRb6Qp8Ow76a7E+AAQAjbmVpkLD1aQAAAABJRU5ErkJggg==">资料类型
+          </dt>
+								<dd class="dd"
+                  v-for="(item,f) in smalllist"
+                  :key="'f'+f"
+                  :class="{ 'dda': item.status }"
+                  @click="_changesmall(f)"
+                >
+									{{item.name}}
+								</dd>
+                </a-spin>
+							</dl>
+						</div>
+						<div class="zhuti_right">
+							<!-- 系统数据 -->
+							<xtsj v-show="name=='系统数据'" :zjhm="zjhm" ref="xingtong" ></xtsj>
+							<!-- 基本资料 -->
+							<jbxx v-show="name=='基本信息'" ref="jibenziliao" :jcjd="jcjd" :zjhm="zjhm" :see='see' :leiXing='leiXing'></jbxx>
+							<!-- 影音资料 -->
+							<div v-show="name=='影像资料'">
+                <a-spin :spinning="spinning">
+                 <div  style="flex-wrap: wrap;text-align:center;margin-top:165px;display:flex;justify-content: center;" >
+            <template style="display:flex">
+              <viewer :images="imgs" style="display: inline-flex;">
+                <div
+                  class="tupian"
+                  style="margin-top:20px; margin-left:18px;
+                     padding:8px;center;width:315px;height:177px;position:relative;
+                    "
+                  v-show="smalllist[xuhao].fileList.length > 0 "
+                  v-for="(item,index) in smalllist[xuhao].fileList"
+                  :key="index"
+                  @mouseenter="entera(index)"
+                  @mouseleave="leavea(index)"
+                >
+                  <img style="width:100%;height:100%" :src="item.thumbUrl" @click="yulanaa" />
+                  <div
+                    v-show="smalllist[xuhao].fileList[index].zhuang&&see==true"
+                    style="position: absolute;
+                      width: 314px;
+                      bottom: 0px;
+                      height: 35px;
+                      line-height: 54px;
+                      display: flex;
+                      left:0px;
+                      justify-content: flex-end;
+                      align-items: center;
+                      background-color: rgba(71, 166, 255, 0.8);
+                      z-index: 8;"
+                  >
+                    <a-icon
+                      @click="shanchua(index)"
+                      type="delete"
+                      style="color:#ffffff;margin-right:10px;margin-left:20px;font-size:20px;"
+                    />
+                  </div>
+                </div>
+              </viewer>
+            </template>
+
+            <div
+              v-if="smalllist[xuhao].fileList.length < 3"
+              v-show="see==true"
+              class="upload-btn hoverup"
+              style="display:inline-flex;justify-content: center;
+              alignItems: center;
+              width:315px;height:177px;
+              position:relative;
+              flexFlow: column; margin-top:20px;margin-left:18px;
+              border:1px solid #ededed;
+              "
+            >
+           
+              <input
+                style="cursor:pointer;
+                  height: 100%;
+                  width: 100%;
+                  border: none;
+                  opacity: 0;"
+                  :disabled="see==false"
+                  type="file"
+                  @change="tirggerFile($event)"
+              />
+            </div>
+            
+          </div>
+                </a-spin>
+
+              </div>
+							<!-- 征信查询 -->
+							<zxcx v-show="name=='征信查询'"  :jcjd="jcjd" :zjhm="zjhm" ref="zhengxin" ></zxcx>
+							<!-- 分析结论 -->
+							<fxjl v-show="name=='分析结论'" :zjhm="zjhm" :jcjd="jcjd" :see="see" ref="fenxijielun" ></fxjl>
+						</div>
+				</div>
+      </div>
+    </template>
+  </a-modal>
+</template>
+
+<script>
+import moment from 'moment' //
+import { getAction } from '@/api/manage'
+import { postAction } from '@/api/manage'
+import { putAction } from '@/api/manage'  
+import { deleteAction } from '@/api/manage'
+import xtsj from './xtsj' //系统数据
+import jbxx from './jbxx'  //基本资料 
+import zxcx from './zxcx' //征信查询
+import fxjl from './fxjl' //分析结论
+
+export default {
+	name: 'FpdkFcZqModal',
+	components: {
+    xtsj,jbxx,zxcx,fxjl
+  },
+  data() {
+    return {
+      dkyt:null,
+      kehu:"", //客户名称
+      spinning:false,
+      see: true,
+      leiXing: '数据采集',
+      modal: {
+        title: '基本信息',
+        visible: false,
+        width: '100%',
+        style: { height: '100%', top: '0', 'padding-bottom': 0, width: '100%', background: '#1890FF' },
+        fullScreen: true
+      },
+      imgs:[],
+			destroyOnClose:true,
+			persryle: {
+        height: '20px',
+        position: 'fixed',
+        'z-index':1000,
+        'padding-top': '54px',
+        left: '0px',
+        top: '0px',
+        right: '0px',
+        bottom: '0px'
+			},
+      name:"系统数据",
+      smalllist:[
+        { name: '生产经营信息', title: '生产经营信息', status: true, wan: false, fileList: [] },
+         { name: '担保人及抵押物信息', title: '担保人及抵押物信息', status: false, wan: false, fileList: [] },
+          { name: '其他信息', title: '其他信息', status: false, wan: false, fileList: [] },
+      ],
+      xuhao:0,
+			biglist: [
+        { name: '系统数据', status: true },
+        { name: '基本资料', status: false },
+				{ name: '影音资料', status: false },
+				{ name: '征信查询', status: false },
+        { name: '分析结论', status: false },
+      ],
+      zjhm:"",
+      jcjd:"",
+      url: {}
+    }
+  },
+  created() {
+		this.persryle.height = document.documentElement.clientHeight + 'px'
+	},
+  methods: {
+    // 切换影像资料菜单
+    //   点击选择小磊
+    _changesmall(e) {
+      this.xuhao = e
+      for (let i = 0; i < this.smalllist.length; i++) {
+        this.smalllist[i].status = false
+      }
+      this.smalllist[e].status = true
+      console.log( this.smalllist )
+    },
+    // 获取影音资料
+    getyingyin(){
+      
+      let that = this
+      that.spinning = true
+      let obj = {
+        zjhm:that.zjhm
+      }
+      getAction('/business/dhglJjKhcjyxzl/list', obj).then(res => {
+        if (res.success == true) {
+          console.log( res )
+          let shuzu = that.smalllist;
+           let getshu = res.result;
+           for (let b = 0; b < shuzu.length; b++) {
+             shuzu[b].fileList=[]
+          }
+           for (let i = 0; i < getshu.length; i++) {
+             console.log(61)
+             for (let b = 0; b < shuzu.length; b++) {
+                if (shuzu[b].title == getshu[i].zllx) {
+                  shuzu[b].wan = true
+                  let image = window._CONFIG['domianURL'] + '/' + getshu[i].zldz
+                  shuzu[b].fileList.push({ name: '', thumbUrl: image, uid: getshu[i].id, zhuang: false })
+                }
+              }
+           }
+           that._changesmall(0)
+           that.spinning = false
+        } else {
+          // 接口失败
+          this.$notification.error({
+            message: '提示',
+            description: res.message,
+            duration: 3
+          })
+          that.spinning = false
+        }
+      })
+    },
+    // 移入
+    entera(e){
+      this.smalllist[this.xuhao].fileList[e].zhuang = true
+    },
+    // 移除
+    leavea(e){
+      this.smalllist[this.xuhao].fileList[e].zhuang = false
+    },
+    // 删除
+    shanchua(e){
+      let that = this
+      let obj = {
+        id: that.smalllist[that.xuhao].fileList[e].uid
+      }
+      deleteAction('/business/dhglJjKhcjyxzl/delete', obj).then(res => {
+        if (res.success == true) {
+          this.$notification.success({
+            message: '提示',
+            description: res.message,
+            duration: 3
+          })
+          that.smalllist[that.xuhao].fileList.splice(e, 1)
+        } else {
+          // 接口失败
+          this.$notification.error({
+            message: '提示',
+            description: res.message,
+            duration: 3
+          })
+        }
+      })
+    },
+    // 查看原型图
+    yulanaa(){
+      this.imgs = []
+      for (let i = 0; i < this.smalllist[this.xuhao].fileList.length; i++) {
+        this.imgs.push(this.smalllist[this.xuhao].fileList[i].thumbUrl)
+      }
+    },
+    // 上传图片
+    tirggerFile(event){
+       let that = this
+      var file = event.target.files
+      var formData = new FormData()
+      formData.append('file', event.target.files[0])
+      formData.append('zjhm', that.zjhm)
+      postAction('/sys/common/upload', formData).then(res => {
+        if (res.success == true) {
+          let imgurl = window._CONFIG['domianURL'] + '/' + res.message
+          that.smalllist[that.xuhao].fileList.push({ name: '', thumbUrl: imgurl, uid: '', zhuang: false })
+          let dizhi = res.message
+          event.target.value = ''
+          this.unpimg(dizhi, that.smalllist[that.xuhao].fileList.length, '')
+        } else {
+          // 接口失败
+          this.$notification.error({
+            message: '提示',
+            description: res.message,
+            duration: 3
+          })
+        }
+      })
+    },
+    unpimg(dizhi,a,s){
+       let that = this
+       let obj = {
+         zjhm:that.zjhm,
+         zldz:dizhi,
+         zllx:that.smalllist[this.xuhao].title
+       }
+      postAction('/business/dhglJjKhcjyxzl/add', obj).then(res => {
+        if (res.success == true) {
+          console.log( res )
+          that.smalllist[that.xuhao].fileList[a - 1].uid = res.result.id
+          that.smalllist[that.xuhao].fileList[a - 1].status = 'dele'
+          this.$notification.success({
+            message: '提示',
+            description: res.message,
+            duration: 3
+          })
+        } else {
+          // 接口失败
+          this.$notification.error({
+            message: '提示',
+            description: res.message,
+            duration: 3
+          })
+        }
+      })
+    },
+		// 切换左边菜单
+		_biglist(e){
+			for (let i = 0; i < this.biglist.length; i++) {
+        this.biglist[i].status = false
+      }
+      if (this.biglist[e].name == '影像资料' ) {
+        this.getyingyin()
+      }else if (this.biglist[e].name == '基本信息') {
+        this.$refs.jibenziliao.getjbxx(this.dkyt)
+      }else if (this.biglist[e].name == '分析结论') {
+        this.$refs.fenxijielun.getchuju()
+      }else if (this.biglist[e].name == '系统数据') {
+        this.$refs.xingtong.getshuju()
+      }else if( this.biglist[e].name == '征信查询' ){
+        this.$refs.zhengxin.zXinformation()
+      }
+			this.biglist[e].status = true
+      this.name = this.biglist[e].name
+      this.modal.title = '客户【'+this.kehu+'】'+this.biglist[e].name
+		},
+
+    dakai(e,a,c,d,f,dkyt) {
+      console.log(d)
+      let that = this
+      this.dkyt=dkyt;
+  
+      if (a=="企业") {
+        that.biglist= [
+        { name: '系统数据', status: true },
+        { name: '基本信息', status: false },
+				{ name: '影像资料', status: false },
+        { name: '分析结论', status: false },
+      ]
+     
+      }else{
+        that.biglist= [
+          { name: '系统数据', status: true },
+          { name: '基本信息', status: false },
+          { name: '征信查询', status: false },
+          { name: '分析结论', status: false },
+        ]
+        
+      }
+      if(d === false){
+        that.see = false
+      }else{
+        that.see = true
+      }
+      that.name = "系统数据"
+      that.kehu = c
+       that.modal.title = '客户【'+c+'】'+'系统数据'
+      that.zjhm = e
+      that.jcjd = f
+      that.modal.visible = true
+      setTimeout(
+        function(){that.$refs.xingtong.getshuju()},20
+      )
+    },
+    guabi() {
+      this.modal.visible = false
+      this.$emit('diaoyong')  
+    },
+    handleOk() {
+      this.guabi()
+    },
+    handleCancel() {
+      
+      this.guabi()
+    }
+  }
+}
+</script>
+
+<style  scoped>
+.dt img{
+    width: 14px;
+    height: 13px;
+    margin-right: 5px;
+}
+.dt {
+    background-color: #e2e7f1;
+    color: #1c1d1e;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 35px;
+    padding-left: 10px;
+}
+.zhuti_right{
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #f3f2f2;
+    padding: 0px 20px;
+}
+.dd{
+    cursor: pointer;
+    text-indent: 3em;
+    color: #49a0ed;
+    padding: 2px 0;
+    text-decoration: underline;
+		text-align: center;
+		display: flex;
+}
+.dda{
+    cursor: pointer;
+    color: #ffffff;
+    padding: 2px 0;
+    background-color: #1890ff;
+    text-decoration: underline;
+}
+.menu-child{
+	display: inline-block;
+    width: 187px;
+    font-size: 14px;
+    background-color: #e2e7f1;
+    height: 100%;
+    overflow-y: auto;
+}
+.menu-left-item{
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #ffffff;
+}
+.common_bg{
+    background-color: #1890ff;
+    color: #ffffff;
+    font-weight: 600;
+}
+.menu-left{
+    vertical-align: top;
+    display: inline-block;
+    width: 170px;
+    background-color: #002140;
+    height: 100%;
+    overflow-y: auto;
+    padding-top: 2px;
+}
+.zhuti_left{
+	height: 100%;
+	display: flex;
+}
+.zhuti{
+	height: 100%;
+	width: 100%;
+	background-color: #ffffff;
+	display: flex;
+}
+.person_title {
+  height: 54px;
+  background-color: #419ff3;
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+  left: 0px;
+  top: 0px;
+  padding: 0px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+}
+.person_titlea {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+}
+.person_titlea_a {
+  width: 28px;
+  height: 25px;
+  margin-right: 10px;
+}
+.person_titleb {
+  height: 22px;
+  width: 22px;
+  cursor: pointer;
+}
+.chakan {
+  border: none;
+  box-shadow: none;
+  margin-right: 0px;
+  border-bottom: solid 1px #1890ff;
+  color: #1890ff;
+  margin-left: 10px;
+}
+.chakan:hover {
+  color: blue;
+  border-bottom: solid 1px blue;
+  cursor: pointer;
+}
+
+.xiuGaiBtn {
+  background-color: #ff9e4d;
+  color: #ffffff;
+  background: rgb(255, 158, 77);
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(255, 158, 77);
+
+}
+.hoverup{
+  background: url(../../../assets/shangchuan.png) no-repeat;
+  background-size: 100% 100%;
+}
+</style>

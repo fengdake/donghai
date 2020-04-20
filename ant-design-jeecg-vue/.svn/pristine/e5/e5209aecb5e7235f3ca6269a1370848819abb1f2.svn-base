@@ -1,0 +1,320 @@
+<template>
+  <a-card :bordered="false">
+    <!-- 查询区域 -->
+    <div class="table-page-search-wrapper">
+      <a-form layout="inline">
+        <a-row :gutter="24">
+          <a-col :md="6" :sm="8">
+            <a-form-item label="数据日期">
+              <j-date
+                placeholder="请选择"
+                v-model="queryParam.sjrq"
+                :showTime="true"
+                dateFormat="YYYY-MM-DD"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="8">
+            <a-form-item label="行员代号">
+              <a-input placeholder="请输入行员代号" v-model="queryParam.hydh"></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="8">
+            <a-form-item label="行员名称">
+              <a-input placeholder="请输入行员名称" v-model="queryParam.hymc"></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="8">
+            <a-form-item label="星期">
+              <a-select
+                mode="tags"
+                placeholder="请选择"
+                style="width: 100%"
+                :tokenSeparators="[',']"
+                @change="handleChange"
+                v-model="xq"
+              >
+                <a-select-option
+                  v-for="(item,index) in xqList"
+                  :key="index" :value='item.value'
+                >{{item.name}}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="24">
+          <a-col :md="10" :sm="16">
+            <a-form-item label="交易金额(万元)">
+              <a-input placeholder="最低交易金额" v-model="queryParam.jyje_begin" style="width:110px"></a-input> ~
+              <a-input placeholder="最高交易金额" v-model="queryParam.jyje_end" style="width:110px"></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="8">
+            <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
+              <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
+              <a-button
+                type="primary"
+                ghost
+                @click="searchReset"
+                icon="reload"
+                style="margin-left: 8px"
+              >重置</a-button>
+            </span>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
+
+    <!-- 操作按钮区域 -->
+    <div class="table-operator">
+      <a-button
+        type="primary"
+        class="moBan"
+        icon="download"
+        @click="handleExportXls('合规-员工异常行为-账户异常交易')"
+      >导出</a-button>
+    </div>
+
+    <!-- table区域-begin -->
+    <div>
+      <a-table
+        ref="table"
+        size="small"
+        bordered
+        rowKey="id"
+        :scroll="{x:1860}"
+        :columns="columns"
+        :dataSource="dataSource"
+        :pagination="ipagination"
+        :loading="loading"
+        @change="handleTableChange"
+      ></a-table>
+    </div>
+    <!-- table区域-end -->
+
+    <!-- 表单区域 -->
+  </a-card>
+</template>
+
+<script>
+import { JeecgListMixin } from '@/mixins/JeecgListMixin'
+import JDate from '@/components/jeecg/JDate'
+
+export default {
+  name: 'YcxwZhycjyList',
+  mixins: [JeecgListMixin],
+  components: {
+    JDate
+  },
+  data() {
+    return {
+      description: '合规-员工异常行为-账户异常交易管理页面',
+      xq:[],
+      xqList: [
+        {name: '星期一',value: '星期一'},
+        {name: '星期二',value: '星期二'},
+        {name: '星期三',value: '星期三'},
+        {name: '星期四',value: '星期四'},
+        {name: '星期五',value: '星期五'},
+        {name: '星期六',value: '星期六'},
+        {name: '星期日',value: '星期日'}
+      ],
+      // 表头
+      columns: [
+        {
+          title: '序号',
+          dataIndex: '',
+          key: 'rowIndex',
+          width: 50,
+          align: 'center',
+          customRender: function(t, r, index) {
+            return parseInt(index) + 1
+          }
+        },
+        {
+          title: '数据日期',
+          align: 'center',
+          width: 80,
+          dataIndex: 'sjrq'
+        },
+        {
+          title: '行员代号',
+          align: 'center',
+          width: 80,
+          dataIndex: 'hydh'
+        },
+        {
+          title: '行员名称',
+          align: 'center',
+          width: 80,
+          dataIndex: 'hymc'
+        },
+        {
+          title: '家属关系',
+          align: 'center',
+          width: 80,
+          dataIndex: 'jsgx'
+        },
+        {
+          title: '家属姓名',
+          align: 'center',
+          width: 80,
+          dataIndex: 'jsxm'
+        } /*,
+		   {
+            title: '证件号码',
+            align:"center",
+         width:160,
+            dataIndex: 'zjhm'
+           }*/,
+        {
+          title: '账号/卡号',
+          align: 'center',
+          width: 130,
+          dataIndex: 'zh'
+        },
+        {
+          title: '交易日期',
+          align: 'center',
+          width: 80,
+          dataIndex: 'jyrq'
+        },
+        {
+          title: '交易时间',
+          align: 'center',
+          width: 80,
+          dataIndex: 'jysj'
+        },
+        {
+          title: '交易金额',
+          align: 'center',
+          width: 80,
+          dataIndex: 'jyje'
+        },
+        {
+          title: '对方姓名',
+          align: 'center',
+          width: 300,
+          dataIndex: 'dfxm'
+        },
+        {
+          title: '星期',
+          align: 'center',
+          width: 80,
+          dataIndex: 'xq'
+        },
+        {
+          title: '备注',
+          align: 'center',
+          width: 80,
+          dataIndex: 'bz'
+        }
+      ],
+      url: {
+        list: '/business/ycxwZhycjy/list',
+        delete: '/business/ycxwZhycjy/delete',
+        deleteBatch: '/business/ycxwZhycjy/deleteBatch',
+        exportXlsUrl: 'business/ycxwZhycjy/exportXls',
+        importExcelUrl: 'business/ycxwZhycjy/importExcel'
+      }
+    }
+  },
+  computed: {
+    importExcelUrl: function() {
+      return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
+    }
+  },
+  methods: {
+    handleChange(value) {
+        console.log(`selected ${value}`);
+        this.queryParam.xq = `${value}`
+      },
+    searchReset() {
+      this.queryParam = {}
+      this.xq = []
+      this.selectedRowKeys = []
+      this.loadData(1)
+    },
+    searchQuery() {
+      this.selectedRowKeys = []
+      this.loadData(1);
+    },
+    //审核
+    shenhe() {
+      if (this.selectedRowKeys.length == 0) {
+        this.$notification.warn({
+          message: '提示',
+          description: `请选择需要审核的数据`,
+          duration: 3
+        })
+      } else {
+        for (let i = 0; i < this.dataSource.length; i++) {
+          for (let j = 0; j < this.selectedRowKeys.length; j++) {
+            if (this.dataSource[i].id == this.selectedRowKeys[j]) {
+              if (this.dataSource[i].zt == '已审核') {
+                this.$notification.warn({
+                  message: '提示',
+                  description: `请选择审核状态为未审核的数据`,
+                  duration: 3
+                })
+                return
+              }
+            }
+          }
+        }
+        this.visible = true
+      }
+    },
+    handleOk(e) {
+      console.log(`${this.selectedRowKeys}`)
+      let obj = {
+        id: `${this.selectedRowKeys}`,
+        shnr: this.shenHeValue
+      }
+      this.confirmLoading = true
+      postAction('/business/ycxwZhycjy/shenhe', obj)
+        .then(res => {
+          console.log(res)
+          if (res.success == true) {
+            this.$notification.success({
+              message: '提示',
+              description: res.message,
+              duration: 3
+            })
+            this.visible = false
+            this.shenHeValue = ''
+            this.selectedRowKeys = []
+            this.loadData(1)
+          } else {
+            this.$notification.error({
+              message: '提示',
+              description: res.message,
+              duration: 3
+            })
+          }
+        })
+        .finally(() => {
+          this.confirmLoading = false
+        })
+    },
+    shuaXin() {
+      this.selectedRowKeys = []
+      this.loadData(1)
+    },
+    handleCancel(e) {
+      this.visible = false
+    }
+  }
+}
+</script>
+<style scoped>
+@import '~@assets/less/common.less';
+.moBan {
+  background: #17c295;
+  border: 1px solid #17c295;
+}
+.moBan:hover {
+  background: #3ad0a8;
+  border: 1px solid #17c295;
+}
+</style>

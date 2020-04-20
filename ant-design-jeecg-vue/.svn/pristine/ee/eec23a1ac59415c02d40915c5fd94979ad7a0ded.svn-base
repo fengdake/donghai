@@ -1,0 +1,71 @@
+<template>
+  <a-modal
+    :title="title"
+    :width="600"
+    :visible="visible"
+    style="height:800px;overflow-y: auto;"
+    :confirmLoading="confirmLoading"
+    @cancel="handleCancel"
+    :footer="null"
+    cancelText="关闭"
+  >
+    <a-spin :spinning="confirmLoading">
+      <div style="text-align: center;">{{shujv.tsxx}}</div>
+    </a-spin>
+  </a-modal>
+</template>
+
+<script>
+import { httpAction,getAction  } from '@/api/manage'
+import pick from 'lodash.pick'
+import moment from 'moment'
+
+export default {
+  name: 'SxsqDbgsdbfxModal',
+  data() {
+    return {
+      title: '阳光信贷提示',
+      visible: false,
+      confirmLoading: false,
+      shujv: {},
+      fsfs: '',
+    }
+  },
+  props: ['sfzh'],
+  created() {},
+  methods: {
+    edit() {
+      this.visible = true
+      this.getYsxed()
+    },
+    getYsxed() {
+      let that = this
+      let obj = {
+        sfzh: this.sfzh
+      }
+      this.confirmLoading = true
+      getAction('/business/sxsqJbxx/getYsxed', obj).then(res => {
+        console.log(res)
+        this.shujv = res
+        if(res.clsx == true){
+            this.fsfs = res.clsx
+        }else{
+            this.fsfs = res.clsx
+        }
+      }).finally(() => {
+          this.confirmLoading = false
+        })
+    },
+    close() {
+        this.$emit('fsfs',this.fsfs)
+      this.visible = false
+    },
+    handleCancel() {
+      this.close()
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+</style>

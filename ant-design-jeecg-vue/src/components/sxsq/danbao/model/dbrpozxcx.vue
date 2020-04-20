@@ -1,0 +1,969 @@
+<template>
+  <div>
+    <a-spin :spinning="spinning">
+      <div class="jia_top">
+        <a-button
+          type="primary"
+          style="margin-right:20px;"
+          icon="save"
+          @click="getchazx"
+          v-show="cha"
+          v-if="zhanshia"
+        >查询</a-button>
+        <a-button
+          type="primary"
+          style="margin-right:20px;"
+          icon="save"
+          @click="replay"
+          v-show="cha"
+          v-if="zhanshib"
+        >重新申请</a-button>
+        <span
+          class="wenzi"
+          style="color: red;font-size: 17px;"
+          v-show="zhanshiwen!==''"
+        >{{zhanshiwen}}</span>
+      </div>
+      <div class="zheng_all" v-if="zhanshiwen==''">
+        <!-- <div class="jia_top">
+          <a-button type="primary" style="margin-right:20px;" icon="save" @click="baocunzxcx">保存</a-button>
+        </div>-->
+        <!-- 配偶信息查询 -->
+        <p class="cahxun" style="margin-top:40px;">
+          <span class="cahxun_title">配偶征信查询数据</span>
+          <a :href="zXCXPeiOu.pdfurl" target="_blank">PDF预览</a>
+        </p>
+        <p class="daikuancha" style="margin-top:30px;">
+          <img class="daikuancha_tu" src="../../../../assets/daikuancha.png" alt /> 当前负债汇总
+        </p>
+        <div class="dailuanliebiao">
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">授信机构数</p>
+            <p class="dailuanliebiao_a_c">{{zXCXPeiOu.sxjgs}}</p>
+          </div>
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">授信贷款总额(元)</p>
+            <p class="dailuanliebiao_a_c">{{zXCXPeiOu.dksxze}}</p>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">贷款用信总额(元)</p>
+            <p class="dailuanliebiao_a_c">{{zXCXPeiOu.dkyxze}}</p>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">担保总额(元)</p>
+            <p class="dailuanliebiao_a_c">{{zXCXPeiOu.dbze}}</p>
+          </div>
+        </div>
+        <p class="daikuancha" style="margin-top:30px;">
+          <img class="daikuancha_tu" src="../../../../assets/daikuancha.png" alt /> 未结清贷款汇总
+        </p>
+
+        <div class="dailuanliebiao">
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">总贷款情况</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">笔数</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.zdkbs}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">余额(元)</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.zdkye}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">住房贷款情况</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">笔数</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.zfdkbs}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">余额(元)</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.zfdkye}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">经营贷款情况</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">笔数</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.jydkbs}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">余额(元)</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.jydkye}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">农户贷款情况</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">笔数</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.nhdkbs}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">余额(元)</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.nhdkye}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">助学贷款情况</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">笔数</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.zxdkbs}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">余额(元)</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.zxdkye}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">汽车贷款情况</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">笔数</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.qcdkbs}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">余额(元)</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.qcdkye}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">非银行贷款情况</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">总笔数</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.fyhdkzbs}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">余额(元)</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.fyhdkye}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="daikuancha" style="margin-top:30px;">
+          <img class="daikuancha_tu" src="../../../../assets/daikuancha.png" alt /> 违约情况汇总
+        </p>
+        <div class="dailuanliebiao">
+          <div class="dailuanliebiao_a" style="width: 490px;">
+            <p class="dailuanliebiao_a_a">近5年各类贷款累计连续逾期最大期数</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">2019年</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.lxyqzdqs1}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">2018年</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.lxyqzdqs2}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">2017年</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.lxyqzdqs3}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">2016年</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.lxyqzdqs4}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">2015年</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.lxyqzdqs5}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="dailuanliebiao_a" style="width: 490px;">
+            <p class="dailuanliebiao_a_a">近5年各类信用卡累计连续逾期最大期数</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">2019年</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.xyklxyq1}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">2018年</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.xyklxyq2}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">2017年</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.xyklxyq3}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">2016年</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.xyklxyq4}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">2015年</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.xyklxyq5}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">逾期标志</p>
+            <p class="dailuanliebiao_a_c">{{zXCXPeiOu.yqbs}}</p>
+          </div>
+        </div>
+        <p class="daikuancha" style="margin-top:30px;">
+          <img class="daikuancha_tu" src="../../../../assets/daikuancha.png" alt /> 信用卡汇总
+        </p>
+        <div class="dailuanliebiao">
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">机构数</p>
+            <p class="dailuanliebiao_a_c">{{zXCXPeiOu.xykjgs}}</p>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">最高授信额度(万元)</p>
+            <p class="dailuanliebiao_a_c">{{zXCXPeiOu.zgsxed}}</p>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">当前已用额度(元)</p>
+            <p class="dailuanliebiao_a_c">{{zXCXPeiOu.dqyyed}}</p>
+          </div>
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">账户数</p>
+            <p class="dailuanliebiao_a_c">{{zXCXPeiOu.xykzhs}}</p>
+          </div>
+        </div>
+        <p class="daikuancha" style="margin-top:30px;">
+          <img class="daikuancha_tu" src="../../../../assets/daikuancha.png" alt /> 负面信息
+        </p>
+
+        <div class="dailuanliebiao">
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">欠税信息</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">笔数</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.qsxxbs}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">金额(元)</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.qsxxje}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">行政处罚</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">笔数</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.xzcfbs}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">金额(元)</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.xzcfje}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">民事判决信息</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">笔数</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.mspjxxbs}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">金额(元)</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.mspjxxje}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">涉诉情况</p>
+            <div class="dailuanliebiao_b">
+              <div>
+                <p class="dailuanliebiao_a_b">笔数</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.ssqkbs}}</p>
+              </div>
+              <div>
+                <p class="dailuanliebiao_a_b">金额(元)</p>
+                <p class="dailuanliebiao_b_a">{{zXCXPeiOu.ssqkje}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dailuanliebiao_a">
+            <p class="dailuanliebiao_a_a">是否为失信执行人</p>
+            <p class="dailuanliebiao_a_c">{{zXCXPeiOu.sfwsxzxr}}</p>
+          </div>
+        </div>
+        <!-- 担保情况汇总 -->
+        <p class="daikuancha" style="margin-top:30px;">
+          <img class="daikuancha_tu" src="../../../../assets/daikuancha.png" alt /> 担保情况汇总
+        </p>
+        <!-- 担保情况汇总 -->
+        <a-table
+          style="margin-top:20px;  border-radius: 10px;margin-bottom:20px;background:#ffffff;box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34)"
+          :columns="columnsa"
+          :dataSource="zXCXPeiOu.dbqk_Android"
+        />
+        <!-- 征信审核结论 -->
+        <p class="jielun">
+          <span style="font-weight:600;">征信审核结论</span>
+          <button v-if="zXCXPeiOu.zxshjl == '通过'" class="tongguo">通过</button>
+          <button v-if="zXCXPeiOu.zxshjl != '通过'" class="weitongg">未通过</button>
+        </p>
+      </div>
+    </a-spin>
+  </div>
+</template>
+<script>
+import { httpAction } from '@/api/manage'
+import pick from 'lodash.pick'
+import { getAction } from '@/api/manage'
+import { putAction } from '@/api/manage'
+import { postAction } from '@/api/manage'
+import moment from 'moment'
+
+export default {
+  name: 'sqrzxcx',
+  components: {},
+  data() {
+    return {
+      spinning: false,
+      zhanshia: false,
+      zhanshib: false,
+      zhanshiwen: '', //展示文
+      zxvalue: '', //征信查询刺痛审核结论
+      zxnotPassShow: false, //征信查询修改系统审核结论为未通过
+      zxPassShow: false, //征信查询修改系统审核结论为通过
+      zxxiuGaiTishi: '', //征信查询修改系统审核结论时的提示
+      zxchenshu: false, //征信查询陈述框显示
+      badStatements: '', //不良陈述
+      zXCXPeiOu: {}, //征信查询配偶
+      zxChaXunId: '', //征信查询id
+      columnsa: [
+        {
+          title: '对外担保机构数',
+          align: 'center',
+          width: '20%',
+          dataIndex: '对外担保机构数'
+        },
+        {
+          title: '担保总额(元)',
+          align: 'center',
+          width: '20%',
+          dataIndex: '担保总额'
+        },
+        {
+          title: '担保余额(元)',
+          align: 'center',
+          width: '20%',
+          dataIndex: '担保余额'
+        },
+        {
+          title: '担保五级分类',
+          align: 'center',
+          width: '20%',
+          dataIndex: '担保五级分类'
+        },
+        {
+          title: '币种',
+          align: 'center',
+          width: '20%',
+          dataIndex: '币种'
+        }
+      ]
+    }
+  },
+  props: ['sxid','dbid','cha'],
+  created() {},
+  methods: {
+    // 征信信息查询
+    getchazx() {
+      let that = this
+      that.$confirm({
+        title: '您确定查询征信信息吗?',
+        content: '',
+        onOk() {
+          let obj = {
+            js: '担保人配偶',
+            id: that.dbid
+          }
+          that.spinning = true
+          getAction('/business/sxsqZx/dbAdd', obj)
+            .then(res => {
+              console.log(res)
+              if (res.success == true) {
+                //console.log('接口成功')
+                that.information()
+              } else {
+                // 接口失败
+              }
+            })
+            .finally(() => {
+              that.spinning = false
+            })
+        },
+        onCancel() {
+          //console.log(23)
+        }
+      })
+    },
+
+    replay() {
+      let that = this
+      let obj = {
+        js: '担保人配偶',
+        dbid: that.dbid,
+        sxid: that.sxid
+      }
+      getAction('/business/sxsqZx/reset', obj)
+        .then(res => {
+          console.log(res)
+          if (res.success == true) {
+            //console.log('接口成功')
+            that.information()
+          } else {
+            // 接口失败
+          }
+        })
+        .finally(() => {
+          that.information()
+        })
+    },
+
+    //征信查询
+    information() {
+      var that = this
+      let obj = {
+        js: '担保人配偶',
+        sxid: that.sxid,
+        description: that.dbid
+      }
+      this.spinning = true
+      getAction('/business/sxsqZxcx/list', obj)
+        .then(res => {
+          if (res.success == true) {
+            // if (res.result.records.length == 1) {
+            this.zXCXPeiOu = res.result.records[0]
+            this.zxvalue = this.zXCXPeiOu.zxshjl
+            if (this.zXCXPeiOu.id == null || this.zXCXPeiOu.id == '') {
+              this.zxChaXunId = ''
+            } else {
+              this.zxChaXunId = this.zXCXPeiOu.id
+            }
+            if (res.result.records[0].description == '' || res.result.records[0].description == null) {
+              this.zxPassShow = false
+              this.zxnotPassShow = false
+              this.zxchenshu = false
+              this.zxxiuGaiTishi = ''
+            } else if (res.result.records[0].description == '系统审核结论为未通过，人工修改为通过') {
+              this.zxPassShow = true
+              this.zxnotPassShow = false
+              this.zxchenshu = true
+              this.zxxiuGaiTishi = res.result.records[0].description
+            } else if (res.result.records[0].description == '系统审核结论为通过，人工修改为未通过') {
+              this.zxPassShow = false
+              this.zxnotPassShow = true
+              this.zxchenshu = true
+              this.zxxiuGaiTishi = res.result.records[0].description
+            }
+            // }
+            this.zhanshiwen = ''
+            this.zhanshia = false
+          } else {
+            // 接口失败
+            this.zhanshiwen = res.message
+            if (res.message.indexOf('请先填写授信申请书') > -1) {
+              this.visible = false
+              // 接口失败
+              this.$notification.warn({
+                message: '提示',
+                description: res.message,
+                duration: 3
+              })
+            } else {
+              this.visible = true
+            }
+            if (res.message.indexOf('没有相关查询任务') > -1) {
+              this.zhanshia = true
+            } else {
+              this.zhanshia = false
+            }
+            if (res.message.indexOf('查询失败') > -1) {
+              this.zhanshib = true
+            } else {
+              this.zhanshib = false
+            }
+          }
+        })
+        .finally(() => {
+          this.spinning = false
+        })
+    },
+  }
+}
+</script>
+<style scoped lang="less">
+.jia_top {
+  display: flex;
+//   border-bottom: 1px solid #f1f1f3;
+  margin-top: 15px;
+  align-items: center;
+  .jia_top_a {
+    cursor: pointer;
+    .jia_top_a_a {
+      color: #717171;
+      font-size: 13px;
+      padding: 1px 15px;
+    }
+    .jia_top_a_c {
+      color: #1890ff;
+      font-size: 13px;
+      padding: 1px 15px;
+    }
+    .jia_top_a_b {
+      width: 75px;
+      height: 2px;
+      background-color: #1890ff;
+      margin: 0 auto;
+    }
+  }
+}
+.zheng_all {
+  margin-top: 20px;
+  .daikuancha {
+    font-size: 16px;
+    color: #5eaaee;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    .daikuancha_tu {
+      width: 24px;
+      height: 29px;
+      margin-right: 6px;
+    }
+  }
+  .dailuanliebiao {
+    display: flex;
+    align-items: center;
+    padding: 0px 0px;
+    flex-wrap: wrap;
+    border: 1px solid rgba(73, 160, 237, 0.6);
+    padding-bottom: 20px;
+    padding-right: 15px;
+    background-color: rgba(73, 160, 237, 0.08);
+    border-radius: 6px;
+    margin-top: 10px;
+    .dailuanliebiao_a {
+      cursor: pointer;
+      width: 156px;
+      height: 80px;
+      padding: 10px 15px;
+      box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+      border-radius: 10px;
+      display: flex;
+      flex-flow: column;
+      justify-content: space-between;
+      margin-left: 20px;
+      margin-top: 20px;
+      background-color: #ffffff;
+      .dailuanliebiao_b_c {
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        color: #49a0ed;
+        line-height: 58px;
+      }
+      &:hover {
+        width: 156px;
+        height: 80px;
+        padding: 10px 15px;
+        box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+        border-radius: 10px;
+        display: flex;
+        flex-flow: column;
+        justify-content: space-between;
+        background-color: #ffffff;
+        background: #49a0ed;
+        .dailuanliebiao_a_a {
+          font-size: 12px;
+          color: #ffffff;
+          font-weight: 600;
+          border-bottom: 1px solid #ffffff;
+          padding-bottom: 2px;
+        }
+        .dailuanliebiao_b_c {
+          width: 100%;
+          text-align: center;
+          font-size: 16px;
+          font-weight: 600;
+          color: #ffffff;
+          line-height: 58px;
+        }
+        .shenqingrena {
+          font-size: 12px;
+          color: #ffffff;
+        }
+        .shenqingrenb {
+          text-align: center;
+          font-size: 22px;
+          font-weight: 600;
+          color: #ffffff;
+          margin-bottom: 12px;
+        }
+        .shenqingrenc {
+          text-align: center;
+          font-size: 12px;
+          color: #ffffff;
+          margin-bottom: 32px;
+        }
+        .dailuanliebiao_b {
+          display: flex;
+          div {
+            width: 50%;
+            text-align: center;
+            .dailuanliebiao_b_a {
+              font-size: 16px;
+              font-weight: 600;
+              color: #ffffff;
+              line-height: 30px;
+            }
+          }
+        }
+        .dailuanliebiao_a_c {
+          text-align: center;
+          font-size: 16px;
+          font-weight: 600;
+          color: #ffffff;
+          margin-bottom: 3px;
+        }
+        .dailuanliebiao_a_b {
+          font-size: 12px;
+          color: #ffffff;
+          span {
+            font-size: 20px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-right: 16px;
+          }
+        }
+      }
+      .dailuanliebiao_a_c {
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        color: #49a0ed;
+        margin-bottom: 3px;
+      }
+      .dailuanliebiao_b {
+        display: flex;
+        div {
+          width: 50%;
+          text-align: center;
+          .dailuanliebiao_b_a {
+            font-size: 16px;
+            font-weight: 600;
+            color: #49a0ed;
+            line-height: 30px;
+          }
+        }
+      }
+      .dailuanliebiao_a_a {
+        font-size: 12px;
+        color: #464646;
+        font-weight: 600;
+        padding-bottom: 2px;
+        border-bottom: 1px solid #d6d6d6;
+      }
+      .shenqingrena {
+        font-size: 12px;
+        color: #777676;
+      }
+      .shenqingrenb {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 600;
+        color: #49a0ed;
+        margin-bottom: 12px;
+      }
+      .shenqingrenc {
+        text-align: center;
+        font-size: 12px;
+        color: #777676;
+        margin-bottom: 32px;
+      }
+      .dailuanliebiao_a_b {
+        font-size: 12px;
+        color: #777676;
+        span {
+          font-size: 20px;
+          font-weight: 600;
+          color: #49a0ed;
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+  .daikuan {
+    display: flex;
+    border: 1px solid #49a0ed;
+    border-radius: 6px;
+    width: 1530px;
+    margin-top: 24px;
+
+    .daikuana {
+      width: 130px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-right: 1px solid #49a0ed;
+      font-size: 16px;
+      font-weight: 600;
+      color: #948e8e;
+    }
+    .daikuanb {
+      width: 1408px;
+      font-size: 12px;
+      color: #2a3344;
+      .daikuanb_a {
+        height: 52px;
+        display: flex;
+        span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 138px;
+        }
+      }
+      .daikuanb_b {
+        height: 44px;
+        display: flex;
+        background-color: #f7f8fc;
+        span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 138px;
+        }
+      }
+      .daikuanb_c {
+        height: 44px;
+        display: flex;
+        span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 138px;
+        }
+      }
+    }
+  }
+  .jielun {
+    span {
+      color: #ff4647;
+      font-size: 15px;
+    }
+    .tongguo {
+    //   background-color: #f3f2f2;
+      color: #1890ff;
+      border: none;
+      text-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+      // border: 2px solid #1890ff;
+      border-radius: 8px;
+      font-size: 22px;
+      width: 80px;
+      height: 36px;
+      margin-left: 8px;
+      position: relative;
+      outline: none;
+      font-weight: 600;
+      img {
+        position: absolute;
+        position: absolute;
+        right: -8px;
+        top: -10px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+    .weitongg {
+    //   background-color: #f3f2f2;
+      color: #b1b1b1;
+      border: none;
+      border-radius: 8px;
+      font-size: 22px;
+      width: 100px;
+      height: 36px;
+      margin-left: 8px;
+      outline: none;
+      font-weight: 600;
+    }
+  }
+  .chushen {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    .chushen_a {
+      width: 300px;
+      height: 176px;
+      font-size: 14px;
+      background-color: rgba(253, 172, 172, 0.1);
+      border: 2px solid #feadac;
+      border-radius: 10px;
+      color: #ff5555;
+      margin-left: 56px;
+      margin-top: 40px;
+
+      padding: 10px;
+      &:hover {
+        background-color: rgba(255, 71, 71, 0.1);
+        box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+      }
+    }
+    .chushen_c {
+      width: 300px;
+      height: 176px;
+      font-size: 14px;
+      background-color: #49a0ed;
+      border: 2px solid #49a0ed;
+      border-radius: 10px;
+      margin-left: 56px;
+      margin-top: 40px;
+      box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      &:hover {
+        box-shadow: 0px 0px 7px rgba(73, 160, 237, 0.8);
+        img {
+          width: 200px;
+          margin-left: 30px;
+        }
+      }
+      img {
+        width: 170px;
+        margin-left: 45px;
+      }
+    }
+    .chushen_b {
+      margin-left: 56px;
+      margin-top: 40px;
+      width: 300px;
+      height: 176px;
+      padding: 10px;
+      font-size: 14px;
+      background-color: #ffffff;
+      border: 2px solid #b4daff;
+      border-radius: 10px;
+      color: #535353;
+      &:hover {
+        box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+      }
+    }
+  }
+  .kehuchiyou {
+    border: 1px solid #d8e2f0;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin: 20px auto;
+    // box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+    // margin-top: 35px;
+    &:hover {
+      border: solid 1px rgba(73, 160, 237, 1);
+      font-weight: 600;
+    }
+    .kehuchiyoua {
+      font-size: 14px;
+      color: #464646;
+    }
+    .kehuchiyoub {
+      display: flex;
+      flex-wrap: wrap;
+      // justify-content: space-around;
+      img {
+        height: 88px;
+        margin-right: 40px;
+      }
+    }
+  }
+  .cahxun {
+    .cahxun_title {
+      border-left: 6px solid #47a5ff;
+      padding-left: 4px;
+      font-size: 16px;
+      color: #535353;
+      margin-right: 20px;
+    }
+  }
+}
+.wohang {
+  display: flex;
+  margin-top: 30px;
+  .pingjia {
+    display: flex;
+    align-items: center;
+    color: #2d364c;
+    font-size: 16px;
+    img {
+      width: 24px;
+      margin-left: 10px;
+    }
+    .weitongg {
+      background-color: #f3f2f2;
+      color: #b1b1b1;
+      border: none;
+      border-radius: 8px;
+      font-size: 22px;
+      width: 80px;
+      height: 36px;
+      margin-left: 8px;
+      position: relative;
+      outline: none;
+      font-weight: 600;
+    }
+    .tongguo {
+      outline: none;
+      color: #c2dffd;
+      font-weight: 600;
+      text-shadow: 0px 0px 7px rgba(73, 160, 237, 0.34);
+      border: none;
+      background-color: #f3f2f2;
+      border-radius: 8px;
+      font-size: 22px;
+      width: 80px;
+      height: 36px;
+      color: #49a0ed;
+      margin-left: 8px;
+      position: relative;
+
+      img {
+        position: absolute;
+        position: absolute;
+        right: -8px;
+        top: -10px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+  .texthover {
+    &:hover {
+      border: solid 1px #49a0ed;
+    }
+  }
+}
+</style> 

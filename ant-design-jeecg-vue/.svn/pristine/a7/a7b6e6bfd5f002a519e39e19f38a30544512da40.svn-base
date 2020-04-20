@@ -1,0 +1,2431 @@
+<template>
+  <div class="popupApply-mask1">
+    <div class="popupApply-box">
+      <div class="popupApply-content flex">
+        <div class="asideBox">
+          <ul class="menu-left">
+            <!-- 大列表 -->
+            <li
+              class="menu-left-item"
+              v-for="(item,indexa) in biglist"
+              :key="indexa"
+              :class="{common_bg:item.status}"
+              @click="getface(indexa)"
+            >{{item.name}}</li>
+          </ul>
+          <dl class="menu-child" v-show="biglist[7].status">
+            <a-spin :spinning="yingzhe">
+              <dt class="dt">
+                <img src="../../assets/bianji.png" />影像资料总览
+              </dt>
+              <dd
+                v-for="(item,op) in smalllist"
+                :key="'op'+op"
+                v-show="op==32"
+                class="dd"
+                :class="{ 'dda': item.status}"
+                @click="_changesmall(op)"
+              >
+                <span>({{item.fileList.length}})</span>
+                {{item.name}}
+              </dd>
+              <dt class="dt">
+                <img src="../../assets/bianji.png" />基础证件
+              </dt>
+              <!-- 1 -->
+              <dd
+                v-for="(item,indexb) in smalllist"
+                :key="'b'+indexb"
+                v-show="indexb<7"
+                class="dd"
+                :class="{ 'dda': item.status}"
+                @click="_changesmall(indexb)"
+              >
+                <span>({{item.fileList.length}})</span>
+                {{item.name}}
+              </dd>
+
+              <dt class="dt">
+                <img src="../../assets/bianji.png" />授信材料
+              </dt>
+              <!-- 2 -->
+              <!-- <dd class="dd">借款申请表</dd> -->
+              <dd
+                v-for="(item,indexc) in smalllist"
+                :key="'c'+indexc"
+                v-show="indexc==7"
+                class="dd"
+                :class="{ 'dda': item.status}"
+                @click="_changesmall(indexc)"
+              >
+                <span>({{item.fileList.length}})</span>
+                {{item.name}}
+              </dd>
+
+              <dt class="dt">
+                <img src="../../assets/bianji.png" />经营相关材料
+              </dt>
+              <dd class="disabled">
+                <div>1</div>个体经营户
+              </dd>
+              <!-- 3 -->
+              <dd
+                v-for="(item,d) in smalllist"
+                :key="'d'+d"
+                v-show="d > 7&&d < 12"
+                class="dd"
+                :class="{ 'dda': item.status}"
+                @click="_changesmall(d)"
+              >
+                <span>({{item.fileList.length}})</span>
+                {{item.name}}
+              </dd>
+              <dd class="disabled">
+                <div>2</div>工薪类客户
+              </dd>
+              <!-- 4 -->
+              <dd
+                v-for="(item,e) in smalllist"
+                :key="'e'+e"
+                v-show="e > 11&&e < 15"
+                class="dd"
+                :class="{ 'dda': item.status}"
+                @click="_changesmall(e)"
+              >
+                <span>({{item.fileList.length}})</span>
+                {{item.name}}
+              </dd>
+              <dd class="disabled">
+                <div>3</div>法人客户
+              </dd>
+              <!-- 5 -->
+              <dd
+                v-for="(item,f) in smalllist"
+                :key="'f'+f"
+                v-show="f > 14&&f < 26"
+                class="dd"
+                :class="{ 'dda': item.status}"
+                @click="_changesmall(f)"
+              >
+                <span>({{item.fileList.length}})</span>
+                {{item.name}}
+              </dd>
+
+              <dt class="dt">
+                <img src="../../assets/bianji.png" />担保材料
+              </dt>
+              <dd class="disabled">
+                <div>1</div>保证
+              </dd>
+              <!-- 6 -->
+              <dd
+                v-for="(item,g) in smalllist"
+                :key="'g'+g"
+                v-show="g==26"
+                class="dd"
+                :class="{ 'dda': item.status}"
+                @click="_changesmall(g)"
+              >
+                <span>({{item.fileList.length}})</span>
+                {{item.name}}
+              </dd>
+
+              <dd class="disabled">
+                <div>2</div>抵押
+              </dd>
+              <!-- 7 -->
+              <dd
+                v-for="(item,h) in smalllist"
+                :key="'h'+h"
+                v-show="h > 26&&h < 31"
+                class="dd"
+                :class="{ 'dda': item.status}"
+                @click="_changesmall(h)"
+              >
+                <span>({{item.fileList.length}})</span>
+                {{item.name}}
+              </dd>
+              <dt class="dt">
+                <img src="../../assets/bianji.png" />授信调查审批
+              </dt>
+              <!-- 8 -->
+              <dd
+                v-for="(item,i) in smalllist"
+                :key="'i'+i"
+                v-show="i==31"
+                class="dd"
+                :class="{ 'dda': item.status}"
+                @click="_changesmall(i)"
+              >
+                <span>({{item.fileList.length}})</span>
+                {{item.name}}
+              </dd>
+            </a-spin>
+          </dl>
+        </div>
+        <!-- 上传文件 -->
+        <div
+          class="link-content flex-1"
+          style="justify-content: center;"
+          v-show="biglist[7].status"
+        >
+          <a-spin
+            :spinning="yingzhe"
+            :list="smalllist[xuhao].fileList"
+            style="width: 93%;margin: 0 auto;padding-top:20px;"
+          >
+            <p
+              style="background:#fff;padding:10px;"
+              v-show="cha&&smalllist[xuhao].title!=='影像资料总览'"
+            >
+              <a-button type="primary" @click="unyxzl">上传</a-button>
+            </p>
+            <sxsqyxzl
+              ref="sxsqyxzla"
+              :yxlist="yxlist"
+              @deleimg="deleimg"
+              :yximg="yximg"
+              :title="smalllist[xuhao].title"
+              :cha="cha"
+            ></sxsqyxzl>
+          </a-spin>
+        </div>
+
+        <!-- 人脸识别 -->
+        <div
+          class="link-content flex-1"
+          style="padding:20px 40px;width:100%"
+          v-show="biglist[2].status"
+        >
+          <renlian :cha="cha" ref="renlian" :sxid="sxid"></renlian>
+        </div>
+
+        <!-- 基本信息 -->
+        <div
+          class="link-content flex-1"
+          style="padding:20px 40px;width:80%"
+          v-show="biglist[8].status"
+        >
+          <jbxx
+            ref="jbxxaa"
+            :sxid="sxid"
+            :sfzh="sfzh"
+            :cha="cha"
+            :taskid="taskid"
+            :instid="instid"
+            :flag="flag"
+          ></jbxx>
+        </div>
+
+        <!-- 抵押担保 -->
+        <div class="link-content flex-1" style="width:80%" v-show="biglist[9  ].status">
+          <!-- 抵押担保头部 -->
+          <div class="jia_top diya">
+            <div
+              class="jia_top_a"
+              v-for="(item,index) in danbaoList "
+              @click="_changedanbao(index)"
+              :key="index"
+            >
+              <p :class=" item.status?'jia_top_a_c':'jia_top_a_a'">{{item.name}}</p>
+              <p class="jia_top_a_b" v-show="item.status"></p>
+            </div>
+          </div>
+
+          <danBao :cha="cha" v-show="danbaoList[0].status" ref="diya" :sxid="sxid"></danBao>
+          <QyDbaofx :cha="cha" v-show="danbaoList[3].status" ref="diyb" :sxid="sxid"></QyDbaofx>
+          <SxsqDyfxList :cha="cha" v-show="danbaoList[1].status" ref="diyc" :sxid="sxid"></SxsqDyfxList>
+          <SxsqDbgsdbfxList :cha="cha" v-show="danbaoList[2].status" ref="diyd" :sxid="sxid"></SxsqDbgsdbfxList>
+        </div>
+        <!-- 授权申请单 -->
+        <div
+          class="link-content flex-1"
+          style="width:80%;padding:20px 40px;"
+          v-show="biglist[11].status"
+        >
+          <sxsqd :sxid="sxid" :cha="cha" ref="getfang"></sxsqd>
+        </div>
+        <!-- 初审结果 -->
+        <div
+          class="link-content flex-1"
+          style="width:80%;padding:20px 40px;"
+          v-show="biglist[10].status"
+        >
+          <a-spin :spinning="spinning">
+            <!-- 初审结果 -->
+            <div class="jia_top">
+              <a-button
+                type="primary"
+                ghost
+                style="margin-left:15px;"
+                @click="upshouxin"
+                v-show="cha"
+                v-if="instid==''||instid==null"
+              >提交授信</a-button>
+              <a-button
+                type="primary"
+                style="margin-left:15px;"
+                @click="xiushouxin"
+                v-else
+                v-show="flag!=0 && xiugaiBtn"
+              >修改授信</a-button>
+            </div>
+            <div class="zheng_all">
+              <p class="cahxun" style="margin-top:40px;">
+                <span class="cahxun_title" style="padding-left:14px;">数据审核结果</span>
+              </p>
+
+              <div class="dailuanliebiao">
+                <div
+                  class="dailuanliebiao_a"
+                  style="width:300px;height:176px;justify-content: normal;"
+                >
+                  <p class="dailuanliebiao_a_a">我行数据审核结论</p>
+                  <p class="shenqingrena" style="line-height: 30px;">申请人</p>
+                  <p class="shenqingrenb" style="line-height: 85px;">{{wh.whsjshjl}}</p>
+                </div>
+                <div
+                  class="dailuanliebiao_a"
+                  style="width:300px;height:176px;justify-content: normal;"
+                >
+                  <p class="dailuanliebiao_a_a">征信数据审核结论</p>
+                  <p class="shenqingrena" style="line-height: 30px;">申请人</p>
+                  <p class="shenqingrenb" style="line-height: 85px;">{{zx.zxsjshjl}}</p>
+                </div>
+              </div>
+
+              <p class="cahxun" style="margin-top:40px;">
+                <span class="cahxun_title" style="padding-left:14px;">不良原因陈述</span>
+              </p>
+              <div class="dailuanliebiao">
+                <div
+                  class="dailuanliebiao_a"
+                  style="width:300px;height:176px;justify-content: normal;"
+                >
+                  <p class="dailuanliebiao_a_a">我行数据不良原因陈述</p>
+                  <p class="shenqingrena" style="line-height: 30px;">申请人</p>
+                  <p
+                    class="shenqingrenc"
+                    :title="wh.whsjshwtgyy"
+                    style="height: 35px;font-size: 12px;margin-top: 16px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;"
+                  >{{wh.whsjshwtgyy}}</p>
+                </div>
+                <div
+                  class="dailuanliebiao_a"
+                  style="width:300px;height:176px;justify-content: normal;"
+                >
+                  <p class="dailuanliebiao_a_a">征信数据不良原因陈述</p>
+                  <p class="shenqingrena" style="line-height: 30px;">申请人</p>
+                  <p
+                    class="shenqingrenc"
+                    :title="zx.zxsjshwtgyy"
+                    style="height: 35px;font-size: 12px;margin-top: 16px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;"
+                  >{{zx.zxsjshwtgyy}}</p>
+                </div>
+              </div>
+              <p class="cahxun" style="margin-top:40px;">
+                <span class="cahxun_title" style="padding-left:14px;">数据陈述</span>
+              </p>
+              <div class="dailuanliebiao">
+                <div
+                  class="dailuanliebiao_a"
+                  style="width:300px;height:176px;justify-content: normal;"
+                >
+                  <p class="dailuanliebiao_a_a">我行数据陈述</p>
+                  <p class="shenqingrena" style="line-height: 30px;">申请人</p>
+                  <p
+                    class="shenqingrenc"
+                    :title="wh.whsjcs"
+                    style="height: 35px;font-size: 12px;margin-top: 16px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;"
+                  >{{wh.whsjcs}}</p>
+                </div>
+                <div
+                  class="dailuanliebiao_a"
+                  style="width:300px;height:176px;justify-content: normal;"
+                >
+                  <p class="dailuanliebiao_a_a">征信数据陈述</p>
+                  <p class="shenqingrena" style="line-height: 30px;">申请人</p>
+                  <p
+                    class="shenqingrenc"
+                    :title="zx.zxsjcs"
+                    style="height: 35px;font-size: 12px;margin-top: 16px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;"
+                  >{{zx.zxsjcs}}</p>
+                </div>
+              </div>
+            </div>
+          </a-spin>
+        </div>
+
+        <!-- 我行数据 -->
+        <div
+          class="link-content flex-1"
+          style="padding:20px 40px;width:80%"
+          v-show="biglist[1].status"
+        >
+          <a-spin :spinning="spinning">
+            <!-- 我行数据头部 -->
+            <div class="jia_top">
+              <a-button
+                type="primary"
+                icon="save"
+                :loading="loading"
+                @click="PreservationWoHang"
+                v-show="cha"
+              >保存</a-button>
+            </div>
+
+            <div class="zheng_all">
+              <p class="daikuancha" style="margin-top:10px;">
+                <img class="daikuancha_tu" src="../../assets/daikuancha.png" alt /> 申请人
+              </p>
+              <div class="shenqlist">
+                <div class="shenqlista">
+                  <p class="shenqlistaa">原授信额度(万元)</p>
+                  <p class="shenqlistab"  @click="shouxin( whsjvBr.sfzh )" style="color: #3151b7;text-decoration: underline;cursor: pointer;">{{whsjvBr.ysxje}}<a-icon type="paper-clip" /></p>  
+                </div>
+                <div class="shenqlista">
+                  <p class="shenqlistaa">用信余额(万元)</p>
+                  <p class="shenqlistab"  @click="yongxin( whsjvBr.sfzh )" style="color: #3151b7;text-decoration: underline;cursor: pointer;">{{whsjvBr.yxye}}<a-icon type="paper-clip" /></p> 
+                   
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">授信次数</p>
+                  <p class="shenqlistab">{{whsjvBr.sxcs}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">不良笔数</p>
+                  <p class="shenqlistab">{{whsjvBr.blcs}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">表外不良笔数(万元)</p>
+                  <p class="shenqlistab">{{whsjvBr.bnbldk}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">表内不良笔数(万元)</p>
+                  <p class="shenqlistab">{{whsjvBr.bnbldk}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">最后一笔信用日期</p>
+                  <p class="shenqlistab">{{whsjvBr.zhybyxrq}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">最后一笔本息结清时间</p>
+                  <p class="shenqlistab">{{whsjvBr.zhybdkjqsj}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">五级分类</p>
+                  <p class="shenqlistab">{{whsjvBr.wjfl}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">欠款欠息次数</p>
+                  <p class="shenqlistab">{{whsjvBr.qkqxcs}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">担保笔数</p> 
+                   <p class="shenqlistab"  @click="dbbs( whsjvBr.sfzh )" style="color: #3151b7;text-decoration: underline;cursor: pointer;">{{whsjvBr.dbbs}}<a-icon type="paper-clip" /></p> 
+                  
+                </div>
+                <div class="shenqlista">
+                  <p class="shenqlistaa">存款时点余额(万元)</p>
+                  <p class="shenqlistab">{{whsjvBr.cksdye}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">近一年存款日均(万元)</p>
+                  <p class="shenqlistab">{{whsjvBr.jynckrj}}</p>  
+                </div> 
+                 <div class="shenqlista">
+                  <p class="shenqlistaa">活期存款年日均(万元)</p>
+                  <p class="shenqlistab">{{whsjvBr.hqcknrj}}</p>  
+                </div>  
+                <div class="shenqlista">
+                  <p class="shenqlistaa">定期存款年日均(万元)</p>
+                  <p class="shenqlistab">{{whsjvBr.dqcknrj}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">理财(万元)</p>
+                  <p class="shenqlistab">{{whsjvBr.lc}}</p>  
+                </div> 
+              </div>
+              <div class="kehuchiyou" style="background:#ffffff;display:flex;">
+                <div style="width:16%;border-right:1px solid #cdcdcd;margin-right:30px;">
+                <p class="kehuchiyoua" style="color:##464646">申请人已开通业务</p>
+                <div class="kehuchiyoub" style="justify-content: normal;">
+                  <!-- 已开通 -->
+
+                  <!-- 电费 -->
+                  <img src="../../assets/dianfei.png" v-if="whsjvBr.dfkh == 1" />
+                  <!-- 燃气费 -->
+                  <!-- <img src="../../assets/ranqifei.png" v-if="whsjvBr.mqkh == 1" /> -->
+                  <!-- 水费 -->
+                  <img src="../../assets/shuiFei1.png" v-if="whsjvBr.sfkh == 1" />
+                  <!-- 未开通 -->
+
+                  <img src="../../assets/kehuchiyoun.png" v-if="whsjvBr.dfkh != 1" />
+                  <!-- <img src="../../assets/kehuchiyoue.png" v-if="whsjvBr.mqkh != 1" /> -->
+                  <img src="../../assets/kehuchiyoup.png" v-if="whsjvBr.sfkh != 1" />
+                </div>
+                </div>
+                <div class="kehuchiyous" style="background:#ffffff;">
+                    <p class="kehuchiyoua" style="color:##464646">申请人持有产品</p>
+                    <div class="kehuchiyoub">
+                      <!-- 已开通 -->
+                      <!-- 银联 -->
+                      <img src="../../assets/kehuchiyoua.png" v-if="whsjvBr.wyzx == 1" />
+                      <!-- 支付宝 -->
+                      <img src="../../assets/kehuchiyoub.png" v-if="whsjvBr.zfb == 1" />
+                      <!-- 云闪付 -->
+                      <img src="../../assets/yunshanfu.png" v-if="whsjvBr.ysf == 1" />
+                      <!-- 微信 -->
+                      <img src="../../assets/kehuchiyouf.png" v-if="whsjvBr.wx == 1" />
+                      <!-- 美团 -->
+                      <img src="../../assets/meituan.png" v-if="whsjvBr.mt == 1" />
+                      <!-- 手机银行 -->
+                      <img src="../../assets/kehuchiyoui.png" v-if="whsjvBr.sjyh == 1" />
+                      <!-- 京东支付 -->
+                      <img src="../../assets/kehuchiyouk.png" v-if="whsjvBr.jd == 1" />
+                      <!-- 财付通 -->
+                      <img src="../../assets/kehuchiyoul.png" v-if="whsjvBr.cft == 1" />
+                      <!-- 百度钱包 -->
+                      <img src="../../assets/kehuchiyouo.png" v-if="whsjvBr.bfb == 1" />
+                      <!-- 未开通 -->
+                      <img src="../../assets/yinlian.png" v-if="whsjvBr.wyzx != 1" />
+                      <img src="../../assets/zhifubao.png" v-if="whsjvBr.zfb != 1" />
+                      <img src="../../assets/yunshanfu2.png" v-if="whsjvBr.ysf != 1" />
+                      <img src="../../assets/weixin.png" v-if="whsjvBr.wx != 1" />
+                      <img src="../../assets/meituan1.png" v-if="whsjvBr.mt != 1" />
+                      <img src="../../assets/shoujiyinhang.png" v-if="whsjvBr.sjyh != 1" />
+                      <img src="../../assets/jingdong.png" v-if="whsjvBr.jd != 1" />
+                      <img src="../../assets/caifutong.png" v-if="whsjvBr.cft != 1" />
+                      <img src="../../assets/baiduqianbao.png" v-if="whsjvBr.bfb != 1" />
+                    </div>
+                  </div>
+              </div>
+
+              <p class="daikuancha" style="margin-top:10px;" v-if="whsjvpo != ''">
+                <img class="daikuancha_tu" src="../../assets/daikuancha.png" alt /> 申请人配偶
+              </p>
+              <div class="shenqlist" v-if="whsjvpo != ''">
+                <div class="shenqlista">
+                  <p class="shenqlistaa">原授信额度(万元)</p>
+                  <p class="shenqlistab"  @click="shouxin( whsjvpo.sfzh )" style="color: #3151b7;text-decoration: underline;cursor: pointer;">{{whsjvpo.ysxje}}<a-icon type="paper-clip" /></p>  
+                </div>
+                <div class="shenqlista">
+                  <p class="shenqlistaa">用信余额(万元)</p>
+                  <p class="shenqlistab"  @click="yongxin( whsjvpo.sfzh )" style="color: #3151b7;text-decoration: underline;cursor: pointer;">{{whsjvpo.yxye}}<a-icon type="paper-clip" /></p> 
+                  <!-- <p class="shenqlistab">{{whsjvpo.yxye}}</p>   -->
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">授信次数</p>
+                  <p class="shenqlistab">{{whsjvpo.sxcs}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">不良笔数</p>
+                  <p class="shenqlistab">{{whsjvpo.blcs}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">表外不良笔数(万元)</p>
+                  <p class="shenqlistab">{{whsjvpo.bnbldk}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">表内不良笔数(万元)</p>
+                  <p class="shenqlistab">{{whsjvpo.bnbldk}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">最后一笔信用日期</p>
+                  <p class="shenqlistab">{{whsjvpo.zhybyxrq}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">最后一笔本息结清时间</p>
+                  <p class="shenqlistab">{{whsjvpo.zhybdkjqsj}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">五级分类</p>
+                  <p class="shenqlistab">{{whsjvpo.wjfl}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">欠款欠息次数</p>
+                  <p class="shenqlistab">{{whsjvpo.qkqxcs}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">担保笔数</p>
+                  <p class="shenqlistab"  @click="dbbs( whsjvpo.sfzh )" style="color: #3151b7;text-decoration: underline;cursor: pointer;">{{whsjvpo.dbbs}}<a-icon type="paper-clip" /></p> 
+                  <!-- <p class="shenqlistab">{{whsjvpo.dbbs}}</p>   -->
+                </div>
+                <div class="shenqlista">
+                  <p class="shenqlistaa">存款时点余额(万元)</p>
+                  <p class="shenqlistab">{{whsjvpo.cksdye}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">近一年存款日均(万元)</p>
+                  <p class="shenqlistab">{{whsjvpo.jynckrj}}</p>  
+                </div> 
+                 <div class="shenqlista">
+                  <p class="shenqlistaa">活期存款年日均(万元)</p>
+                  <p class="shenqlistab">{{whsjvpo.hqcknrj}}</p>  
+                </div>  
+                <div class="shenqlista">
+                  <p class="shenqlistaa">定期存款年日均(万元)</p>
+                  <p class="shenqlistab">{{whsjvpo.dqcknrj}}</p>  
+                </div> 
+                <div class="shenqlista">
+                  <p class="shenqlistaa">理财(万元)</p>
+                  <p class="shenqlistab">{{whsjvpo.lc}}</p>  
+                </div> 
+               
+              </div>
+
+              
+              <div class="kehuchiyou" style="background:#ffffff;display:flex;" v-if="whsjvpo != ''">
+                <div style="width:16%;border-right:1px solid #cdcdcd;margin-right:30px;">
+                <p class="kehuchiyoua" style="color:##464646">配偶已开通业务</p>
+                <div class="kehuchiyoub" style="justify-content: normal;">
+                  <!-- 电费 -->
+                  <img src="../../assets/dianfei.png" v-if="whsjvpo.dfkh ==  1" />
+                  <!-- 燃气费 -->
+                  <!-- <img src="../../assets/ranqifei.png" v-if="whsjvpo.mqkh == 1" /> -->
+                  <!-- 水费 -->
+                  <img src="../../assets/shuiFei1.png" v-if="whsjvpo.sfkh == 1" />
+                  <!-- 未开通 -->
+
+                  <img src="../../assets/kehuchiyoun.png" v-if="whsjvpo.dfkh != 1" />
+                  <!-- <img src="../../assets/kehuchiyoue.png" v-if="whsjvpo.mqkh != 1" /> -->
+                  <img src="../../assets/kehuchiyoup.png" v-if="whsjvpo.sfkh != 1" />
+                </div>
+                </div>
+                 <div class="kehuchiyousd" style="background:#ffffff;" v-if="whsjvpo != ''">
+                <p class="kehuchiyoua" style="color:##464646">配偶持有产品</p>
+                <div class="kehuchiyoub">
+                  <!-- 银联 -->
+                  <img src="../../assets/kehuchiyoua.png" v-if="whsjvpo.wyzx == 1" />
+                  <!-- 支付宝 -->
+                  <img src="../../assets/kehuchiyoub.png" v-if="whsjvpo.zfb == 1" />
+                  <!-- 云闪付 -->
+                  <img src="../../assets/yunshanfu.png" v-if="whsjvpo.ysf == 1" />
+                  <!-- 微信 -->
+                  <img src="../../assets/kehuchiyouf.png" v-if="whsjvpo.wx == 1" />
+                  <!-- 美团 -->
+                  <img src="../../assets/meituan.png" v-if="whsjvpo.mt == 1" />
+                  <!-- 手机银行 -->
+                  <img src="../../assets/kehuchiyoui.png" v-if="whsjvpo.sjyh == 1" />
+                  <!-- 京东支付 -->
+                  <img src="../../assets/kehuchiyouk.png" v-if="whsjvpo.jd == 1" />
+                  <!-- 财付通 -->
+                  <img src="../../assets/kehuchiyoul.png" v-if="whsjvpo.cft == 1" />
+                  <!-- 百度钱包 -->
+                  <img src="../../assets/kehuchiyouo.png" v-if="whsjvpo.bfb == 1" />
+                  <!-- 未开通 -->
+                  <img src="../../assets/yinlian.png" v-if="whsjvpo.wyzx != 1" />
+                  <img src="../../assets/zhifubao.png" v-if="whsjvpo.zfb != 1" />
+                  <img src="../../assets/yunshanfu2.png" v-if="whsjvpo.ysf != 1" />
+                  <img src="../../assets/weixin.png" v-if="whsjvpo.wx != 1" />
+                  <img src="../../assets/meituan1.png" v-if="whsjvpo.mt != 1" />
+                  <img src="../../assets/shoujiyinhang.png" v-if="whsjvpo.sjyh != 1" />
+                  <img src="../../assets/jingdong.png" v-if="whsjvpo.jd != 1" />
+                  <img src="../../assets/caifutong.png" v-if="whsjvpo.cft != 1" />
+                  <img src="../../assets/baiduqianbao.png" v-if="whsjvpo.bfb != 1" />
+                </div>
+              </div>
+            </div>
+              </div>
+
+              
+             
+            <div class="wohang">
+              <div style="align-items: center;margin-right: 30px;">
+                <span>
+                  <a style="font-size:20px;color:#ff4848;">*</a>合作关系：
+                </span>
+                <a-select
+                  placeholder
+                  :dropdownMatchSelectWidth="false"
+                  v-model="whsjvBr.hzgx"
+                  :disabled="!cha"
+                  style="width:198px;font-size: 12px;color: black;"
+                >
+                  <a-select-option value="开展的合作业务多，贡献大">开展的合作业务多，贡献大</a-select-option>
+                  <a-select-option value="合作关系一般，贡献一般">合作关系一般，贡献一般</a-select-option>
+                  <a-select-option value="未合作">未合作</a-select-option>
+                </a-select>
+              </div>
+              <p class="pingjia">
+                <span>
+                  <a style="font-size:20px;color:#ff4848;">*</a>我行评价
+                </span>
+                <a-rate
+                  :defaultValue="2"
+                  :allowHalf="allowHalf"
+                  v-model="whsjvBr.whpj"
+                  disabled
+                  style="margin-left:10px;"
+                />
+              </p>
+            </div>
+            <div class="wohang">
+              <p class="pingjia">
+                <span>
+                  <a style="font-size:20px;color:#ff4848;">*</a>系统审核结论
+                </span>
+                <a-radio-group
+                  @change="onChangec"
+                  v-model="value"
+                  style="margin-left:17px;display: flex;
+    align-items: center;"
+                >
+                  <a-radio :value="'通过'"></a-radio>
+                  <span v-if="value == '通过'" class="tongguo">通过</span>
+                  <span v-if="value != '通过'" class="weitongg">通过</span>
+                  <a-radio :value="'未通过'"></a-radio>
+                  <span v-if="value == '未通过'" class="tongguo">未通过</span>
+                  <span v-if="value != '未通过'" class="weitongg">未通过</span>
+                </a-radio-group>
+              </p>
+              <a-alert
+                message="系统审核结论为通过，人工修改为未通过"
+                v-if="notPassShow"
+                type="info"
+                style="width: 25%;color: #ff0000;background-color: #F3F2F2;border: solid 1px #ff0000;"
+              />
+              <a-alert
+                message="系统审核结论为未通过，人工修改为通过"
+                v-if="PassShow"
+                type="info"
+                style="width: 25%;color: #ff0000;background-color: #F3F2F2;border: solid 1px #ff0000;"
+              />
+            </div>
+            <div class="wohang" style="margin:30px auto;">
+              <p class="pingjia" style="align-items: flex-start;width: 110px;">
+                <span>不良原因陈述 :</span>
+              </p>
+              <a-textarea
+                :rows="4"
+                :value="whsjvBr.whblyycs"
+                v-model="whsjvBr.whblyycs"
+                disabled
+                style="width:414px; height:148px;margin-left:20px;font-size: 14px;"
+              />
+            </div>
+            <div class="wohang" style="margin:30px auto;" v-if="chenshu">
+              <p class="pingjia" style="align-items: flex-start;width: 110px;">
+                <span>
+                  <a style="font-size:20px;color:#ff4848;">*</a>人工干预陈述:
+                </span>
+              </p>
+              <a-textarea
+                :rows="4"
+                v-model="whsjvBr.cs"
+                style="width:414px; height:148px;margin-left:20px;font-size: 14px;"
+              />
+            </div>
+          </a-spin>
+        </div>
+        <!-- 征信授权书 -->
+        <div
+          class="link-content flex-1"
+          style="padding:20px 40px;width:80%"
+          v-show="biglist[4].status"
+        >
+          <shouquan :cha="cha" :sxid="sxid" sfzh="sfzh" ref="zhengxin"></shouquan>
+        </div>
+        <!-- 现金流 -->
+        <div
+          class="link-content flex-1"
+          style="padding:20px 40px;width:80%"
+          v-show="biglist[3].status"
+        >
+          <!-- 现金流 -->
+          <xjl ref="xjla" :seediaocha="cha" :sxid="sxid" :taskid="taskid" :sfzh="sfzh"></xjl>
+        </div>
+        <!-- 征信查询 -->
+        <div
+          class="link-content flex-1"
+          style="padding:20px 40px;width:80%"
+          v-show="biglist[5].status"
+        >
+          <div style="display: flex;">
+            <div
+              class="notzhengxinren"
+              :class="zhengxinren == '申请人'?'xuanzhong':''"
+              @click="editsQr('申请人')"
+            >申请人</div>
+            <div
+              class="notzhengxinren"
+              :class="zhengxinren == '配偶'?'xuanzhong':''"
+              @click="editsQr('配偶')"
+            >配偶</div>
+          </div>
+          <sqrzxcx ref="shenqingren" :sxid="sxid" :cha='cha' v-if="zhengxinren == '申请人'"></sqrzxcx>
+          <sqrpozxcx ref="sqrpeiou" :sxid="sxid" v-else></sqrpozxcx>
+        </div>
+
+        <!-- 家庭信息 -->
+        <div
+          class="link-content flex-1"
+          style="padding:20px 40px;width:80%"
+          v-show="biglist[0].status"
+        >
+          <jiaTing :cha="cha" :sxid="sxid"></jiaTing>
+        </div>
+        <!-- 汇法网查询 -->
+        <div
+          class="link-content flex-1"
+          style="padding:20px 40px;width:80%"
+          v-show="biglist[6].status"
+        >
+          <hfwcx ref="hfw" :cha="cha" :sxid="sxid"></hfwcx>
+        </div>
+      </div>
+    </div>
+    <shouxinList ref="mychild"></shouxinList>
+    <yxlist  ref="yxlista"></yxlist>
+    <dblist ref="dblista"></dblist>
+    <upshouxin ref="mychilda" :sxid="sxid" :sfzh="sfzh"></upshouxin>
+    <sqsp ref="mychildaa" :sxid="sxid" :sfzh="sfzh" @hide="hide"></sqsp>
+    <upyxzl
+      ref="upyxzl"
+      :sxid="sxid"
+      :sfzh="sfzh"
+      :title="this.smalllist[this.xuhao].title"
+      @getyingyin="getyingyin"
+    ></upyxzl>
+  </div>
+</template>
+
+<script>
+import PopUpload from './uploadsfz'
+import moment from 'moment'
+import Vue from 'vue'
+import danBao from './danbao/SxsqDbrxxList' //授信申请担保人信息列表
+import QyDbaofx from './danbao/SxsqQydbfxList' //授信申请企业担保分析
+import SxsqDyfxList from './danbao/SxsqDyfxList' //授信申请抵押分析
+import jbxx from './danbao/jbxx' //基本信息
+import SxsqDbgsdbfxList from './danbao/SxsqDbgsdbfxList' //授信申请担保公司担保
+import sqsp from './danbao/sqsp' //被退回的审批
+import jiaTing from './danbao/SxsqJtxxList'
+import shouxinList from './danbao/shouxinlist' //授信列表
+import dblist from  './danbao/dblist' //担保明细弹窗
+import yxlist from './danbao/yxlist'
+import upshouxin from './danbao/upshouxin'
+import xjl from './danbao/xjl'
+import { getAction } from '@/api/manage'
+import { putAction } from '@/api/manage'
+import { postAction } from '@/api/manage'
+import { deleteAction } from '@/api/manage'
+import { fork } from 'child_process'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { fail } from 'assert'
+import { constants } from 'zlib'
+import sxsqd from './danbao/sxsqd' //授信申请单
+import renlian from './danbao/renlian' // 人脸识别
+import shouquan from './danbao/shouquan' //征信授权书
+import hfwcx from './danbao/hfwcx' //汇法网查询
+import sxsqyxzl from './danbao/sxsqyxzl'
+import { USER_INFO } from '@/store/mutation-types'
+import upyxzl from './danbao/upyxzl' //上传影像资料
+import sqrzxcx from './danbao/sqrzxcx' //查询申请人征信
+import sqrpozxcx from './danbao/sqrpozxcx' //查询申请人配偶征信
+
+function getBase64(img, callback) {
+  const reader = new FileReader()
+  reader.addEventListener('load', () => callback(reader.result))
+  reader.readAsDataURL(img)
+}
+export default {
+  name: 'personalDetail',
+  components: {
+    PopUpload,
+    yxlist,
+    dblist,
+    danBao,
+    jiaTing,
+    QyDbaofx,
+    SxsqDbgsdbfxList,
+    SxsqDyfxList,
+    sxsqd,
+    upshouxin,
+    renlian,
+    shouquan,
+    sqsp,
+    shouxinList,
+    jbxx,
+    xjl,
+    sxsqyxzl,
+    hfwcx,
+    upyxzl,
+    sqrzxcx,
+    sqrpozxcx
+  },
+  data() {
+    return {
+      yxlist: [],
+      yximg: [],
+      allowHalf: true,
+      zhanshia: false,
+      zhanshib: false,
+      zhanshiwen: '',
+      yingzhe: false,
+      dateFormat: 'YYYY-MM-DD',
+      woshishijian: '2019-02-02',
+      spinning: false,
+      baoZhengVal: '', //基本信息保证
+      xinYongVal: '', //基本信息信用
+      diYaVal: '', //基本信息抵押
+      zhiYaVal: '', //基本信息质押
+      imgs: [],
+      xuhao: 32,
+      baseurl: window._CONFIG['domianURL'],
+      url: {
+        fileUpload: window._CONFIG['domianURL'] + '/sys/common/upload'
+      },
+      headers: {},
+      previewVisible: false, //图片放大
+      previewImage: '', //放大图片地址
+      // 抵押担保头部
+      danbaoList: [
+        { name: '自然人担保分析', status: true },
+        { name: '抵(质)押分析', status: false },
+        { name: '公司担保分析', status: false },
+        { name: '企业担保分析', status: false }
+      ],
+      nian: [{ khh: '1', khmc: '2019-02-03', sqsx: '江苏省连云港东海农商银行 牛山支行', lczt: '申请我行贷款' }],
+      kehulist: [
+        {
+          xh: '1',
+          js: '配偶',
+          khxm: '张玲',
+          sfzh: '320323199002034568',
+          jkzk: '良好',
+          nl: '29',
+          xb: '男',
+          mz: '汉',
+          xw: '无',
+          xl: '大专',
+          hyzk: '已婚',
+          lxdh: '18136033152',
+          zy: '配料员'
+        }
+      ],
+      // 近一年得查询记录
+      kuhuming: [
+        {
+          title: '序号',
+          align: 'center',
+          dataIndex: 'xh'
+        },
+        {
+          title: '角色',
+          align: 'center',
+          dataIndex: 'js'
+        },
+        {
+          title: '客户姓名',
+          align: 'center',
+          dataIndex: 'khxm'
+        },
+        {
+          title: '身份证号',
+          align: 'center',
+          dataIndex: 'sfzh'
+        },
+        {
+          title: '年龄',
+          align: 'center',
+          dataIndex: 'nl'
+        },
+        {
+          title: '性别',
+          align: 'center',
+          dataIndex: 'xb'
+        },
+        {
+          title: '民族',
+          align: 'center',
+          dataIndex: 'mz'
+        },
+        {
+          title: '学位',
+          align: 'center',
+          dataIndex: 'xw'
+        },
+        {
+          title: '学历',
+          align: 'center',
+          dataIndex: 'xl'
+        },
+        {
+          title: '健康状况',
+          align: 'center',
+          dataIndex: 'jkzk'
+        },
+        {
+          title: '婚姻状况',
+          align: 'center',
+          dataIndex: 'hyzk'
+        },
+        {
+          title: '联系电话',
+          align: 'center',
+          dataIndex: 'lxdh'
+        },
+        {
+          title: '职业(工作单位)',
+          align: 'center',
+          dataIndex: 'zy'
+        }
+      ],
+      columnsa: [
+        {
+          title: '对外担保机构数',
+          align: 'center',
+          width: '20%',
+          dataIndex: '对外担保机构数'
+        },
+        {
+          title: '担保总额(元)',
+          align: 'center',
+          width: '20%',
+          dataIndex: '担保总额'
+        },
+        {
+          title: '担保余额(元)',
+          align: 'center',
+          width: '20%',
+          dataIndex: '担保余额'
+        },
+        {
+          title: '担保五级分类',
+          align: 'center',
+          width: '20%',
+          dataIndex: '担保五级分类'
+        },
+        {
+          title: '币种',
+          align: 'center',
+          width: '20%',
+          dataIndex: '币种'
+        }
+      ],
+
+      deleteaa: false, //判断删除
+      close_upload_z: false, //判断编辑弹窗是否弹出
+      previewVisible: false,
+      isupload: true,
+      uploadOk: false,
+      loading: false,
+      imageUrl: '',
+      isupload_z: false,
+      biglist: [
+        { name: '家庭信息', status: true },
+        { name: '我行数据', status: false },
+        { name: '人脸识别', status: false },
+        { name: '现金流', status: false },
+        { name: '征信授权书', status: false },
+        { name: '征信查询', status: false },
+        { name: '汇法网查询', status: false },
+        { name: '影像资料', status: false },
+        { name: '基本信息', status: false },
+        { name: '抵押担保', status: false },
+        { name: '初审结果', status: false },
+        { name: '授信申请单', status: false }
+      ],
+      smalllist: [
+        //   基础证件
+        {
+          name: '借款人身份证',
+          title: '借款人身份证(基础证件)',
+          status: false,
+          wan: false,
+          fileList: []
+        },
+        { name: '户口本', title: '户口本(基础证件)', status: false, wan: false, fileList: [] },
+        { name: '房产证', title: '房产证(基础证件)', status: false, wan: false, fileList: [] },
+        { name: '婚姻证明', title: '婚姻证明(基础证件)', status: false, wan: false, fileList: [] },
+        { name: '营业执照', title: '营业执照(基础证件)', status: false, wan: false, fileList: [] },
+        { name: '其他资料', title: '其他资料(基础证件)', status: false, wan: false, fileList: [] },
+        {
+          name: '配偶身份证',
+          title: '配偶身份证(基础证件)',
+          status: false,
+          wan: false,
+          fileList: []
+        },
+        // 授信材料
+        { name: '借款申请表', title: '借款申请表(授信材料)', status: false, wan: false, fileList: [] },
+        // 经营相关材料
+        { name: '营业执照', title: '营业执照(个体经营户)', status: false, wan: false, fileList: [] },
+        { name: '购销凭证', title: '购销凭证(个体经营户)', status: false, wan: false, fileList: [] },
+        { name: '银行对账单', title: '银行对账单(个体经营户)', status: false, wan: false, fileList: [] },
+        { name: '客户经营场所', title: '客户经营场所(个体经营户)', status: false, wan: false, fileList: [] },
+        // 工薪类客户
+        { name: '营业执照', title: '营业执照(工薪类客户)', status: false, wan: false, fileList: [] },
+        { name: '其他材料', title: '其他材料(工薪类客户)', status: false, wan: false, fileList: [] },
+        { name: '银行对账单', title: '银行对账单(工薪类客户)', status: false, wan: false, fileList: [] },
+        // 法人客户
+        { name: '营业执照', title: '营业执照(法人客户)', status: false, wan: false, fileList: [] },
+        { name: '特种行业经营许可证', title: '特种行业经营许可证(法人客户)', status: false, wan: false, fileList: [] },
+        { name: '公司章程', title: '公司章程(法人客户)', status: false, wan: false, fileList: [] },
+        { name: '财务报表', title: '财务报表(法人客户)', status: false, wan: false, fileList: [] },
+        { name: '工资表', title: '工资表(法人客户)', status: false, wan: false, fileList: [] },
+        { name: '纳税申请表', title: '纳税申请表(法人客户)', status: false, wan: false, fileList: [] },
+        { name: '水电费发票', title: '水电费发票(法人客户)', status: false, wan: false, fileList: [] },
+        { name: '购销凭证', title: '购销凭证(法人客户)', status: false, wan: false, fileList: [] },
+        { name: '经营场所照片', title: '经营场所照片(法人客户)', status: false, wan: false, fileList: [] },
+        { name: '银行对账单', title: '银行对账单(法人客户)', status: false, wan: false, fileList: [] },
+        { name: '其他资料', title: '其他资料(法人客户)', status: false, wan: false, fileList: [] },
+        // 保证
+        { name: '保证人资料', title: '保证人资料(保证)', status: false, wan: false, fileList: [] },
+        // 抵押
+        { name: '其他资料', title: '其他资料(抵押)', status: false, wan: false, fileList: [] },
+        { name: '补充租赁协议', title: '补充租赁协议(抵押)', status: false, wan: false, fileList: [] },
+        { name: '抵押物产权与评估报告', title: '抵押物产权与评估报告(抵押)', status: false, wan: false, fileList: [] },
+        // { name: '与评估报告', title: '与评估报告(抵押)', status: false, wan: false, fileList: [] },
+        { name: '抵押人相关资料', title: '抵押人相关资料(抵押)', status: false, wan: false, fileList: [] },
+        // 授信调查审批
+        { name: '授信调查审批表', title: '授信调查审批表(授信调查审批)', status: false, wan: false, fileList: [] },
+        { name: '影像资料总览', title: '影像资料总览', status: true, wan: false, fileList: [] }
+      ],
+      whsjvBr: {},
+      whsjvpo: {},
+      value: '', //我行数据系统审核结论
+      wohangShuJvId: '', //我行数据ID
+      heZuoguanxiVal: '', //合作关系
+      notPassShow: false, //修改系统审核结论为未通过
+      PassShow: false, //修改系统审核结论为通过
+      xiuGaiTishi: '', //修改系统审核结论时的提示
+      chenshu: false, //陈述框显示
+      // zxvalue: '', //征信查询刺痛审核结论
+      // zxnotPassShow: false, //征信查询修改系统审核结论为未通过
+      // zxPassShow: false, //征信查询修改系统审核结论为通过
+      // zxxiuGaiTishi: '', //征信查询修改系统审核结论时的提示
+      // zxchenshu: false, //征信查询陈述框显示
+      badStatements: '', //不良陈述
+      zhengxinren: '申请人', //征信人
+      // zXCXBenRen: {}, //征信查询本人
+      // zXCXPeiOu: {}, //征信查询配偶
+      wh: {}, //我行数据初审
+      zx: {}, //征信初审
+      cardExpireDay: '', //身份证到期日期
+      jibeninfoID: '', //基本信息ID
+      xiugaiBtn: true,
+      zxChaXunId: '' //征信查询id
+    }
+  },
+  watch: {},
+  props: ['sxid', 'sfzh', 'cha', 'taskid', 'instid', 'flag'],
+  created() {
+    console.log(this.cha)
+    if (this.cha == false) {
+      this.smalllist[0].fileList[0].diasb = true
+      this.smalllist[0].fileList[1].diasb = true
+      this.smalllist[6].fileList[0].diasb = true
+      this.smalllist[6].fileList[1].diasb = true
+    }
+    const token = Vue.ls.get(ACCESS_TOKEN)
+    this.headers = { 'X-Access-Token': token }
+  },
+  computed: {},
+
+  methods: {
+    moment,
+    // 影像资料删除图片回调
+    deleimg(e) {
+      this.smalllist[this.xuhao].fileList.splice(e, 1)
+    },
+    // 影像资料 上传弹窗
+    unyxzl() {
+      this.$refs.upyxzl.dakai()
+    },
+    // 提交申请
+    upshouxin() {
+      this.$refs.mychilda.dakai('嘿嘿嘿')
+    },
+    // 修改授信
+    xiushouxin() {
+      this.$refs.mychildaa.dakai('', this.instid, this.sxid, this.taskid)
+    },
+    //操作修改授信按钮
+    hide(data) {
+      //console.log(data)
+      if (data == '1') {
+        this.xiugaiBtn = false
+      } else {
+        this.xiugaiBtn = true
+      }
+    },
+    //还原数据
+    getyingyin(e) {
+      let that = this
+      // that.gethuan()
+      that.yingzhe = true
+      let obj = {
+        sxid: that.sxid,
+        pageSize: 100000
+      }
+      getAction('/business/sxsqYxzl/list', obj).then(res => {
+        if (res.success == true) {
+          let getshu = res.result.records
+          let shuzu = that.smalllist
+          for (let i = 0; i < this.smalllist.length; i++) {
+            this.smalllist[i].fileList = []
+          }
+
+          for (let c = 0; c < shuzu.length; c++) {
+            shuzu[c].wan = false
+          }
+          for (let i = 0; i < getshu.length; i++) {
+            // if(  )
+            for (let b = 0; b < shuzu.length; b++) {
+              if (shuzu[b].title == getshu[i].zllx) {
+                shuzu[b].wan = true
+                let image = window._CONFIG['domianURL'] + '/' + getshu[i].zldz
+                shuzu[b].fileList.push({ name: '', thumbUrl: image, uid: getshu[i].id, zhuang: false })
+              }
+            }
+            let image = window._CONFIG['domianURL'] + '/' + getshu[i].zldz
+            shuzu[32].fileList.push({ name: '', thumbUrl: image, uid: getshu[i].id, zhuang: false })
+          }
+          let yxlist = []
+          let yximg = []
+          for (let i = 0; i < that.smalllist[this.xuhao].fileList.length; i++) {
+            yximg.push(that.smalllist[this.xuhao].fileList[i].thumbUrl)
+            yxlist.push({ id: that.smalllist[this.xuhao].fileList[i].uid, angle: 0, width: 100 })
+          }
+          console.log(yximg)
+          that.$refs.sxsqyxzla.getshuju(yxlist, yximg)
+
+          that.yingzhe = false
+        }
+      })
+    },
+
+    // 授信次数
+    shouxin(e) {
+      console.log(e)
+      this.$refs.mychild.dakai(e)
+    },
+    // 用心列表查询
+      yongxin(e){
+        this.$refs.yxlista.dakai(e)
+      },
+      // 担保明细
+      dbbs(e){
+        this.$refs.dblista.dakai(e)
+      },
+
+    // 抵押担保头部选择事件
+    _changedanbao(e) {
+      for (let i = 0; i < this.danbaoList.length; i++) {
+        this.danbaoList[i].status = false
+      }
+      this.danbaoList[e].status = true
+    },
+
+    //   点击选择小磊
+    _changesmall(e) {
+      this.xuhao = e
+      for (let i = 0; i < this.smalllist.length; i++) {
+        this.smalllist[i].status = false
+      }
+      this.smalllist[e].status = true
+      for (let i = 0; i < this.smalllist.length; i++) {
+        this.smalllist[i].fileList = []
+      }
+
+      this.getyingyin(e)
+    },
+    //判断人脸识别 跳转
+    getface(e) {
+      if (e < 3) {
+        this._biglist(e)
+      } else {
+        let obj = {
+          sxid: this.sxid
+        }
+        getAction('/business/sxsqRlsb/authRlsb', obj).then(res => {
+          console.log(res)
+          if (res.success == true) {
+            this._biglist(e)
+          } else {
+            // 接口失败
+            let fanhui = res.message
+            this.$notification.error({
+              message: '提示',
+              description: res.message,
+              duration: 3
+            })
+            if (fanhui.indexOf('人脸识别') != -1) {
+              this._biglist(2)
+            } else {
+              this._biglist(0)
+            }
+          }
+        })
+      }
+    },
+    //   点击选择大列表
+    _biglist(e) {
+      let that = this
+      for (let i = 0; i < this.biglist.length; i++) {
+        this.biglist[i].status = false
+      }
+      this.biglist[e].status = true
+      if (this.biglist[e].name == '我行数据') {
+        this.MylineSh() //我行数据
+      } else if (this.biglist[e].name == '征信查询') {
+        this.zhengxinren = '申请人'
+        setTimeout(function() {
+          that.$refs.shenqingren.zXinformation()
+        }, 100)
+        // this.zXinformation() //征信查询
+      } else if (this.biglist[e].name == '初审结果') {
+        this.cSResult() //初审结果
+      } else if (this.biglist[e].name == '基本信息') {
+        this.$refs.jbxxaa.jBinformation() //基本信息
+        this.$refs.jbxxaa.gethuojifenlei() //基本信息获取行业分类
+      } else if (this.biglist[e].name == '授信申请单') {
+        this.$refs.getfang.getdetail('嘿嘿嘿')
+      } else if (this.biglist[e].name == '人脸识别') {
+        this.$refs.renlian.getauthJtxx('嘿嘿嘿')
+      } else if (this.biglist[e].name == '影像资料') {
+        for (let i = 0; i < this.smalllist.length; i++) {
+          if (this.smalllist[i].status == true) {
+            this.getyingyin(i)
+          }
+        }
+      } else if (this.biglist[e].name == '抵押担保') {
+        this.$refs.diya.getcanshu()
+        this.$refs.diyb.getcanshu()
+        this.$refs.diyc.getcanshu()
+        this.$refs.diyd.getcanshu()
+      } else if (this.biglist[e].name == '征信授权书') {
+        this.$refs.zhengxin.getauthJtxx('嘿嘿嘿')
+      } else if (this.biglist[e].name == '汇法网查询') {
+        this.$refs.hfw.dakai() //汇法网查询
+      } else if (this.biglist[e].name == '现金流') {
+        this.$refs.xjla.getxjl()
+      }
+      this.$emit('changetitle', this.biglist[e].name)
+      // this.$parent.changetitle(this.biglist[e].name);
+    },
+    closeNowPop: function() {
+      this.$emit('closeNowPop')
+    },
+    //修改征信申请人
+    editsQr(zxr) {
+      let that = this
+      that.zhengxinren = zxr
+      if (zxr == '申请人') {
+        setTimeout(function() {
+          that.$refs.shenqingren.zXinformation()
+        }, 100)
+      } else {
+        setTimeout(function() {
+          that.$refs.sqrpeiou.information()
+        }, 100)
+      }
+    },
+    //我行数据
+    MylineSh() {
+      let obj = {
+        sxid: this.sxid
+      }
+      this.spinning = true
+      getAction('/business/sxsqWhkhxx/list', obj)
+        .then(res => {
+          if (res.success == true) {
+            if (res.result.records.length == 2) {
+              for (var i = 0; i < res.result.records.length; i++) {
+                if (res.result.records[i].js == '本人') {
+                  this.whsjvBr = res.result.records[i]
+                  this.whsjvBr.whpj = this.whsjvBr.whpj / 2
+                  this.value = this.whsjvBr.xtshjl
+
+                  // this.whsjvBr.whpj
+                  if (this.whsjvBr.id == null || this.whsjvBr.id == '') {
+                    this.wohangShuJvId = ''
+                  } else {
+                    this.wohangShuJvId = this.whsjvBr.id
+                  }
+                  //console.log(res.result.records[i].description)
+                  if (res.result.records[i].description == '' || res.result.records[i].description == null) {
+                    this.PassShow = false
+                    this.notPassShow = false
+                    this.chenshu = false
+                    this.xiuGaiTishi = ''
+                  } else if (res.result.records[i].description == '系统审核结论为未通过，人工修改为通过') {
+                    this.PassShow = true
+                    this.notPassShow = false
+                    this.chenshu = true
+                    this.xiuGaiTishi = res.result.records[i].description
+                  } else if (res.result.records[i].description == '系统审核结论为通过，人工修改为未通过') {
+                    this.PassShow = false
+                    this.notPassShow = true
+                    this.chenshu = true
+                    this.xiuGaiTishi = res.result.records[i].description
+                  }
+                } else {
+                  this.whsjvpo = res.result.records[i]
+                }
+              }
+            } else if (res.result.records.length == 1) {
+              this.whsjvBr = res.result.records[0]
+              this.whsjvBr.whpj = this.whsjvBr.whpj / 2
+              this.value = this.whsjvBr.xtshjl
+              this.whsjvpo = ''
+              if (this.whsjvBr.id == null || this.whsjvBr.id == '') {
+                this.wohangShuJvId = ''
+              } else {
+                this.wohangShuJvId = this.whsjvBr.id
+              }
+              if (res.result.records[0].description == '' || res.result.records[0].description == null) {
+                this.PassShow = false
+                this.notPassShow = false
+                this.chenshu = false
+                this.xiuGaiTishi = ''
+              } else if (res.result.records[0].description == '系统审核结论为未通过，人工修改为通过') {
+                this.PassShow = true
+                this.notPassShow = false
+                this.chenshu = true
+                this.xiuGaiTishi = res.result.records[0].description
+              } else if (res.result.records[0].description == '系统审核结论为通过，人工修改为未通过') {
+                this.PassShow = false
+                this.notPassShow = true
+                this.chenshu = true
+                this.xiuGaiTishi = res.result.records[0].description
+              }
+            }
+          } else {
+            // 接口失败
+          }
+        })
+        .finally(() => {
+          this.spinning = false
+        })
+    },
+    //我行数据审核结论手动修改
+    onChangec(e) {
+      console.log(e)
+      this.value = e.target.value
+      if (this.value == '通过') {
+        //将未通过改为通过
+
+        this.PassShow = true
+        this.notPassShow = false
+        this.chenshu = true
+        this.xiuGaiTishi = '系统审核结论为未通过，人工修改为通过'
+        if (this.value == this.whsjvBr.yxtshjl) {
+          this.PassShow = false
+          this.notPassShow = false
+          this.chenshu = false
+          this.xiuGaiTishi = ''
+        }
+      } else if (this.value == '未通过') {
+        //将通过该为未通过
+
+        this.PassShow = false
+        this.notPassShow = true
+        this.chenshu = true
+        this.xiuGaiTishi = '系统审核结论为通过，人工修改为未通过'
+        if (this.value == this.whsjvBr.yxtshjl) {
+          this.PassShow = false
+          this.notPassShow = false
+          this.chenshu = false
+          this.xiuGaiTishi = ''
+        }
+      }
+    },
+
+    //初审结果
+    cSResult() {
+      let obj = {
+        sxid: this.sxid
+      }
+      this.spinning = true
+      getAction('/business/sxsqCsjg/list', obj)
+        .then(res => {
+          if (res.success == true) {
+            if (res.result.wh == null) {
+            } else {
+              for (var i = 0; i < res.result.wh.length; i++) {
+                if (res.result.wh[i].js == '本人') {
+                  this.wh = res.result.wh[i]
+                }
+              }
+            }
+            if (res.result.zx != null) {
+              for (var j = 0; j < res.result.zx.length; j++) {
+                if (res.result.zx[j].js == '本人') {
+                  this.zx = res.result.zx[j]
+                }
+              }
+            }
+          } else {
+            // 接口失败
+          }
+        })
+        .finally(() => {
+          this.spinning = false
+        })
+    },
+    //保存我行数据  修改系统审核结论
+    PreservationWoHang() {
+      this.loading = true
+      this.spinning = true
+      console.log(this.xiuGaiTishi)
+      if (this.whsjvBr.hzgx == null || this.whsjvBr.hzgx == '') {
+        this.loading = false
+        this.spinning = false
+        this.$message.warning('请选择合作关系')
+        return false
+      }
+      if (this.chenshu == true) {
+        if (this.whsjvBr.cs == '' || this.whsjvBr.cs == null) {
+          this.loading = false
+          this.spinning = false
+          this.$message.warning('请输入陈述')
+          return false
+        }
+      }
+      let obj = {
+        id: this.whsjvBr.id,
+        sxid: this.whsjvBr.sxid,
+        xtshjl: this.value,
+        whblyycs: this.whsjvBr.whblyycs,
+        cs: this.whsjvBr.cs,
+        description: this.xiuGaiTishi,
+        hzgx: this.whsjvBr.hzgx
+      }
+      putAction('/business/sxsqWhkhxx/editSys', obj)
+        .then(res => {
+          if (res.success == true) {
+            this.$notification.success({
+              message: '提示',
+              description: `修改成功`,
+              duration: 3
+            })
+          } else {
+            // 接口失败
+            this.$notification.error({
+              message: '提示',
+              description: `修改失败`,
+              duration: 3
+            })
+          }
+        })
+        .finally(() => {
+          this.loading = false
+          this.spinning = false
+        })
+    },
+  }
+}
+</script>
+
+<style lang="less" scoped>
+@import url('../../assets/css/reset.css');
+.notzhengxinren {
+  cursor: pointer;
+  width: 70px;
+  padding-bottom: 6px;
+  text-align: center;
+}
+.xuanzhong {
+  color: #1890ff;
+
+  border-bottom: solid 1px #1890ff;
+}
+.ant-upload-list-picture-card .ant-upload-list-item {
+  float: left;
+  width: 300px !important;
+  height: 179px !important;
+}
+.ant-modal-body {
+  padding: 0px !important;
+}
+.shenfena {
+  position: relative;
+  margin-left: 20px;
+  .previmg,
+  .prebox {
+    position: relative;
+    width: 300px;
+    height: 179px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .beijinga {
+    position: absolute;
+    width: 316px;
+    bottom: 0px;
+    height: 35px;
+    line-height: 54px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: rgba(71, 166, 255, 0.8);
+    z-index: 8;
+    .shangchuan {
+      width: 100px;
+      height: 30px !important;
+      padding: 0px;
+    }
+  }
+  .beijingaa {
+    display: none;
+  }
+}
+.popupApply-mask1 {
+  // height: 100%;
+  // position: absolute;top: 0;left: 0;
+  // width: 100%;height: 100%;z-index: 400;background-color: rgba(0, 0, 0, 0.6);
+  .popupApply-box {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    font-size: 16px;
+    background-color: #fff;
+    .popupApply-title {
+      background-color: #f6f6f6;
+      font-size: 16px;
+      padding: 10px 15px;
+      color: #787878;
+      .closse {
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+        .img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+  .popupApply-content {
+    height: 100%;
+    .asideBox {
+      //   -moz-box-shadow: 1px 0px 2px #666;
+      //   -webkit-box-shadow: 1px 0px 2px #666;
+      //   box-shadow: 1px 0px 2px #666;
+      .menu-left {
+        vertical-align: top;
+        display: inline-block;
+        width: 170px;
+        background-color: #002140;
+        height: 100%;
+        overflow-y: auto;
+        padding-top: 2px;
+        .menu-left-item {
+          cursor: pointer;
+          text-align: center;
+          width: 100%;
+          height: 50px;
+          line-height: 50px;
+          font-size: 14px;
+          color: #ffffff;
+        }
+        .common_bg {
+          background-color: #1890ff;
+          color: #ffffff;
+          font-weight: 600;
+        }
+      }
+      .menu-child {
+        display: inline-block;
+        width: 187px;
+        font-size: 14px;
+        background-color: #e2e7f1;
+        height: 100%;
+        overflow-y: auto;
+        .dt {
+          background-color: #e2e7f1;
+          color: #1c1d1e;
+          display: flex;
+          align-items: center;
+          height: 35px;
+          padding-left: 10px;
+          font-size: 12px;
+          img {
+            width: 14px;
+            height: 13px;
+            margin-right: 5px;
+          }
+        }
+        .dd {
+          cursor: pointer;
+          text-indent: 3em;
+          color: #49a0ed;
+          padding: 2px 0;
+          font-size: 12px;
+          span {
+            color: #f05857;
+          }
+          // text-align: center;
+        }
+        .wancheng {
+          cursor: pointer;
+          // text-align: center;
+          color: #2c4eb6;
+          padding: 2px 0;
+          text-decoration: none;
+        }
+        .dda {
+          cursor: pointer;
+          // text-indent: 3em;
+          // text-align: center;
+          color: #ffffff;
+          padding: 2px 0;
+          background-color: #1890ff;
+          span {
+            color: #ffffff;
+          }
+        }
+        .ddb {
+          text-decoration: none;
+        }
+        .disabled {
+          // background-color: #e6f3ff;
+          color: #120f0f;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          font-size: 12px;
+          div {
+            width: 14px;
+            height: 14px;
+            background-color: #f35958;
+            color: #ffffff;
+            font-size: 14px;
+            line-height: 14px;
+            text-indent: 0em;
+            border-radius: 50%;
+            text-align: center;
+            margin-left: 16px;
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+    .avatar-uploader > .ant-upload {
+      margin: 0px;
+    }
+
+    .link-content {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      background-color: #f3f2f2;
+
+      div {
+        .upload-btn {
+          background: url(../../assets/qitashangchuan.png) no-repeat;
+          background-size: 100% 100%;
+        }
+        .hoverup {
+          border: 1px dashed #d9d9d9;
+          &:hover {
+            border: 1px dashed #49a0ed;
+            cursor: pointer;
+          }
+        }
+        .tupian {
+          border: 1px dashed #d9d9d9;
+          &:hover {
+            border: 1px dashed #49a0ed;
+          }
+        }
+      }
+      .danbao_an {
+        padding: 15px 30px;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .abcdefg {
+        width: 942px;
+        margin: 20px auto;
+        .shou_title {
+          text-align: center;
+          font-size: 20px;
+          color: #010101;
+          font-weight: 600;
+        }
+        .shou_jin {
+          font-size: 16px;
+          margin-top: 34px;
+          color: #010101;
+          display: flex;
+          justify-content: space-between;
+        }
+        .shou_all {
+          width: 100%;
+          border: 1px solid #000000;
+        }
+      }
+      .diya {
+        margin: 0px 0 10px 0;
+        line-height: 40px;
+        background-color: #fff;
+        border-bottom: 1px solid #ccc !important;
+        padding-left: 20px;
+      }
+      .jia_top {
+        display: flex;
+        border-bottom: 1px solid #f1f1f3;
+
+        .jia_top_a {
+          cursor: pointer;
+          .jia_top_a_a {
+            color: #717171;
+            font-size: 13px;
+            padding: 1px 15px;
+          }
+          .jia_top_a_c {
+            color: #1890ff;
+            font-size: 13px;
+            padding: 1px 15px;
+          }
+          .jia_top_a_b {
+            width: 75px;
+            height: 2px;
+            background-color: #1890ff;
+            margin: 0 auto;
+          }
+        }
+      }
+      .jiben {
+        position: relative;
+        border: 1px solid rgba(73, 160, 237, 0.4);
+        border-radius: 10px;
+        min-height: 100px;
+        margin-top: 24px;
+        .zhengxina {
+          padding: 15px 0px;
+          font-size: 14px;
+          .zhengxinaa {
+            padding: 0px 15px;
+            display: flex;
+            height: 44px;
+            line-height: 44px;
+            .zhengxinaa_a {
+              width: 200px;
+              text-align: center;
+            }
+            .zhengxinaa_c {
+              width: 228px;
+              text-align: center;
+            }
+            .zhengxinaa_d {
+              width: 228px;
+              text-align: center;
+            }
+            .zhengxinaa_b {
+              width: 133.333px;
+              text-align: center;
+            }
+          }
+          .zhengxinab {
+            display: flex;
+            padding: 0px 15px;
+            height: 44px;
+            line-height: 44px;
+            background-color: #f7f8fc;
+            .zhengxinaa_c {
+              width: 228px;
+              text-align: center;
+            }
+            .zhengxinaa_d {
+              width: 228px;
+              text-align: center;
+            }
+            .zhengxinaa_a {
+              width: 200px;
+              text-align: center;
+            }
+            .zhengxinaa_b {
+              width: 133.333px;
+              text-align: center;
+            }
+          }
+        }
+        .jibena {
+          position: absolute;
+          left: 40px;
+          top: -20px;
+          background-color: #f3f2f2;
+          height: 40px;
+          display: flex;
+          width: 135px;
+          align-items: center;
+          justify-content: center;
+          color: #49a0ed;
+          font-size: 16px;
+          font-weight: 500;
+        }
+        .jibenb {
+          padding: 10px 10px;
+          display: flex;
+          flex-wrap: wrap;
+          padding-bottom: 30px;
+          // justify-content: center;
+          .jibenb_a {
+            display: flex;
+            width: 346px;
+            margin-top: 20px;
+            .jibenb_a_name {
+              color: #464646;
+              width: 150px;
+              font-size: 12px;
+              padding-right: 10px;
+              text-align: right;
+              display: flex;
+              justify-content: flex-end;
+
+              align-items: center;
+            }
+            .jibenb_a_select {
+              font-size: 12px;
+              color: black;
+            }
+            .datapicker {
+              font-size: 12px;
+              color: black;
+            }
+            input:not([type='range']) {
+              color: black;
+            }
+            input {
+              font-family: 'Chinese Quote', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+                'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif,
+                'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+              font-variant: tabular-nums;
+              box-sizing: border-box;
+              margin: 0;
+              padding: 0;
+              list-style: none;
+              position: relative;
+              display: inline-block;
+              padding: 4px 11px;
+              height: 32px;
+              font-size: 12px;
+              line-height: 1.5;
+              color: black;
+              background-color: #fff;
+              background-image: none;
+              border: 1px solid #d9d9d9;
+              border-radius: 4px;
+              transition: all 0.3s;
+            }
+            input::-webkit-input-placeholder {
+              color: #bfbfbf;
+            }
+            input:-moz-placeholder {
+              color: #bfbfbf;
+            }
+            input:-ms-input-placeholder {
+              color: #bfbfbf;
+            }
+          }
+        }
+      }
+      .wohang {
+        display: flex;
+        margin-top: 30px;
+        .pingjia {
+          display: flex;
+          align-items: center;
+          color: #2d364c;
+          font-size: 16px;
+          img {
+            width: 24px;
+            margin-left: 10px;
+          }
+          .weitongg {
+            background-color: #f3f2f2;
+            color: #b1b1b1;
+            border: none;
+            border-radius: 8px;
+            font-size: 22px;
+            width: 80px;
+            height: 36px;
+            margin-left: 8px;
+            position: relative;
+            outline: none;
+            font-weight: 600;
+          }
+          .tongguo {
+            outline: none;
+            color: #c2dffd;
+            font-weight: 600;
+            text-shadow: 0px 0px 7px rgba(73, 160, 237, 0.34);
+            border: none;
+            background-color: #f3f2f2;
+            border-radius: 8px;
+            font-size: 22px;
+            width: 80px;
+            height: 36px;
+            color: #49a0ed;
+            margin-left: 8px;
+            position: relative;
+
+            img {
+              position: absolute;
+              position: absolute;
+              right: -8px;
+              top: -10px;
+              width: 20px;
+              height: 20px;
+            }
+          }
+        }
+        .texthover {
+          &:hover {
+            border: solid 1px #49a0ed;
+          }
+        }
+      }
+      .zheng_all {
+        margin-top: 20px;
+        .shenqlist{
+          display: flex;
+          flex-wrap: wrap;
+          border: 1px solid #d9e3ef;
+          padding: 1px;
+          border-radius: 10px;
+          margin-top: 10px;
+          .shenqlista{
+            width: 12.5%;
+            color: #000;
+            font-size: 12px;
+            .shenqlistaa{
+              height: 38px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background-color: #f9f7f8;
+            }
+            .shenqlistab{
+              height: 38px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background-color: #ffffff;
+            }
+          }
+        }
+        .daikuancha {
+          font-size: 14px;
+          color: #5eaaee;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          .daikuancha_tu {
+            width: 16px;
+            height: 19px;
+            margin-right: 6px;
+          }
+        }
+        .dailuanliebiao {
+          display: flex;
+          align-items: center;
+          padding: 0px 0px;
+          flex-wrap: wrap;
+          border: 1px solid rgba(73, 160, 237, 0.6);
+          padding-bottom: 20px;
+          padding-right: 15px;
+          background-color: rgba(73, 160, 237, 0.08);
+          border-radius: 6px;
+          margin-top: 10px;
+          .dailuanliebiao_a {
+            cursor: pointer;
+            width: 156px;
+            height: 80px;
+            padding: 10px 15px;
+            box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+            border-radius: 10px;
+            display: flex;
+            flex-flow: column;
+            justify-content: space-between;
+            margin-left: 20px;
+            margin-top: 20px;
+            background-color: #ffffff;
+            .dailuanliebiao_b_c {
+              width: 100%;
+              text-align: center;
+              font-size: 16px;
+              font-weight: 600;
+              color: #49a0ed;
+              line-height: 58px;
+            }
+            &:hover {
+              width: 156px;
+              height: 80px;
+              padding: 10px 15px;
+              box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+              border-radius: 10px;
+              display: flex;
+              flex-flow: column;
+              justify-content: space-between;
+              background-color: #ffffff;
+              background: #49a0ed;
+              .dailuanliebiao_a_a {
+                font-size: 12px;
+                color: #ffffff;
+                font-weight: 600;
+                border-bottom: 1px solid #ffffff;
+                padding-bottom: 2px;
+              }
+              .dailuanliebiao_b_c {
+                width: 100%;
+                text-align: center;
+                font-size: 16px;
+                font-weight: 600;
+                color: #ffffff;
+                line-height: 58px;
+              }
+              .shenqingrena {
+                font-size: 12px;
+                color: #ffffff;
+              }
+              .shenqingrenb {
+                text-align: center;
+                font-size: 22px;
+                font-weight: 600;
+                color: #ffffff;
+                margin-bottom: 12px;
+              }
+              .shenqingrenc {
+                text-align: center;
+                font-size: 12px;
+                color: #ffffff;
+                margin-bottom: 32px;
+              }
+              .dailuanliebiao_b {
+                display: flex;
+                div {
+                  width: 50%;
+                  text-align: center;
+                  .dailuanliebiao_b_a {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #ffffff;
+                    line-height: 30px;
+                  }
+                }
+              }
+              .dailuanliebiao_a_c {
+                text-align: center;
+                font-size: 16px;
+                font-weight: 600;
+                color: #ffffff;
+                margin-bottom: 12px;
+              }
+              .dailuanliebiao_a_b {
+                font-size: 12px;
+                color: #ffffff;
+                span {
+                  font-size: 20px;
+                  font-weight: 600;
+                  color: #ffffff;
+                  margin-right: 16px;
+                }
+              }
+            }
+            .dailuanliebiao_a_c {
+              text-align: center;
+              font-size: 16px;
+              font-weight: 600;
+              color: #49a0ed;
+              margin-bottom: 12px;
+            }
+            .dailuanliebiao_b {
+              display: flex;
+              div {
+                width: 50%;
+                text-align: center;
+                .dailuanliebiao_b_a {
+                  font-size: 16px;
+                  font-weight: 600;
+                  color: #49a0ed;
+                  line-height: 30px;
+                }
+              }
+            }
+            .dailuanliebiao_a_a {
+              font-size: 12px;
+              color: #464646;
+              font-weight: 600;
+              padding-bottom: 2px;
+              border-bottom: 1px solid #d6d6d6;
+            }
+            .shenqingrena {
+              font-size: 12px;
+              color: #777676;
+            }
+            .shenqingrenb {
+              text-align: center;
+              font-size: 22px;
+              font-weight: 600;
+              color: #49a0ed;
+              margin-bottom: 12px;
+            }
+            .shenqingrenc {
+              text-align: center;
+              font-size: 12px;
+              color: #777676;
+              margin-bottom: 32px;
+            }
+            .dailuanliebiao_a_b {
+              font-size: 12px;
+              color: #777676;
+              span {
+                font-size: 20px;
+                font-weight: 600;
+                color: #49a0ed;
+                margin-right: 16px;
+              }
+            }
+          }
+        }
+        .daikuan {
+          display: flex;
+          border: 1px solid #49a0ed;
+          border-radius: 6px;
+          width: 1530px;
+          margin-top: 24px;
+
+          .daikuana {
+            width: 130px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-right: 1px solid #49a0ed;
+            font-size: 16px;
+            font-weight: 600;
+            color: #948e8e;
+          }
+          .daikuanb {
+            width: 1408px;
+            font-size: 12px;
+            color: #2a3344;
+            .daikuanb_a {
+              height: 52px;
+              display: flex;
+              span {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 138px;
+              }
+            }
+            .daikuanb_b {
+              height: 44px;
+              display: flex;
+              background-color: #f7f8fc;
+              span {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 138px;
+              }
+            }
+            .daikuanb_c {
+              height: 44px;
+              display: flex;
+              span {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 138px;
+              }
+            }
+          }
+        }
+        .jielun {
+          span {
+            color: #ff4647;
+            font-size: 15px;
+          }
+          .tongguo {
+            background-color: #f3f2f2;
+            color: #1890ff;
+            border: none;
+            text-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+            // border: 2px solid #1890ff;
+            border-radius: 8px;
+            font-size: 22px;
+            width: 80px;
+            height: 36px;
+            margin-left: 8px;
+            position: relative;
+            outline: none;
+            font-weight: 600;
+            img {
+              position: absolute;
+              position: absolute;
+              right: -8px;
+              top: -10px;
+              width: 20px;
+              height: 20px;
+            }
+          }
+          .weitongg {
+            background-color: #f3f2f2;
+            color: #b1b1b1;
+            border: none;
+            border-radius: 8px;
+            font-size: 22px;
+            width: 100px;
+            height: 36px;
+            margin-left: 8px;
+            outline: none;
+            font-weight: 600;
+          }
+        }
+        .chushen {
+          display: flex;
+          width: 100%;
+          overflow-x: auto;
+          flex-wrap: wrap;
+          align-items: flex-end;
+          .chushen_a {
+            width: 300px;
+            height: 176px;
+            font-size: 14px;
+            background-color: rgba(253, 172, 172, 0.1);
+            border: 2px solid #feadac;
+            border-radius: 10px;
+            color: #ff5555;
+            margin-left: 56px;
+            margin-top: 40px;
+
+            padding: 10px;
+            &:hover {
+              background-color: rgba(255, 71, 71, 0.1);
+              box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+            }
+          }
+          .chushen_c {
+            width: 300px;
+            height: 176px;
+            font-size: 14px;
+            background-color: #49a0ed;
+            border: 2px solid #49a0ed;
+            border-radius: 10px;
+            margin-left: 56px;
+            margin-top: 40px;
+            box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            &:hover {
+              box-shadow: 0px 0px 7px rgba(73, 160, 237, 0.8);
+              img {
+                width: 200px;
+                margin-left: 30px;
+              }
+            }
+            img {
+              width: 170px;
+              margin-left: 45px;
+            }
+          }
+          .chushen_b {
+            margin-left: 56px;
+            margin-top: 40px;
+            width: 300px;
+            height: 176px;
+            padding: 10px;
+            font-size: 14px;
+            background-color: #ffffff;
+            border: 2px solid #b4daff;
+            border-radius: 10px;
+            color: #535353;
+            &:hover {
+              box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+            }
+          }
+        }
+        .kehuchiyou {
+          border: 1px solid #d8e2f0;
+          border-radius: 10px;
+          padding: 15px 20px;
+          margin: 20px auto;
+          // box-shadow: 0px 0px 7px rgba(124, 123, 123, 0.34);
+          // margin-top: 35px;
+          &:hover {
+            border: solid 1px rgba(73, 160, 237, 1);
+            font-weight: 600;
+          }
+          .kehuchiyoua {
+            font-size: 14px;
+            color: #464646;
+          }
+          .kehuchiyoub {
+            display: flex;
+            flex-wrap: wrap;
+            // justify-content: space-around;
+            img {
+              height: 44px;
+              margin-right: 20px;
+            }
+          }
+        }
+        .cahxun {
+          .cahxun_title {
+            border-left: 6px solid #47a5ff;
+            padding-left: 4px;
+            font-size: 16px;
+            color: #535353;
+            margin-right: 20px;
+          }
+        }
+      }
+
+      .ceshi {
+        // height: 100%;
+        overflow-y: auto;
+        margin-top: 165px;
+        .upload-btna {
+          background: url(../../assets/imgs/card_z.png) no-repeat;
+          background-size: 100% 100%;
+        }
+        .upload-btnb {
+          background: url(../../assets/imgs/card_b.png) no-repeat;
+          background-size: 100% 100%;
+        }
+        .upload-btn {
+          position: relative;
+          width: 300px;
+          height: 179px;
+
+          .img {
+            width: 300px;
+            height: 179px;
+            border: 1px solid #47a6ff;
+          }
+          .btnimg {
+            cursor: pointer;
+            width: 40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+          }
+          .miaoshu {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            font-size: 18px;
+            color: #49a0ed;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}
+</style>

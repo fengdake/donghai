@@ -1,0 +1,199 @@
+<template>
+  <div>
+    <a-spin :spinning="spinning">
+      <div class="xianjin">
+          <a-table
+            ref="table"
+            size="small"
+            bordered
+            rowKey="id"
+            :columns="columns"
+            :dataSource="dataSource"
+            :pagination="ipagination"
+            :loading="loading"
+            
+            @change="handleTableChange"
+          >
+            <template slot="taskResult" slot-scope="text" style="width: 100%">
+              <font
+                :title="text"
+                style=" display: inline-block;width:100px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;line-height: 100%"
+              >{{text}}</font>
+            </template>
+
+          </a-table>
+      </div>
+    </a-spin>
+  </div>
+</template>
+<script>
+import { httpAction } from '@/api/manage'
+import pick from 'lodash.pick'
+import { getAction } from '@/api/manage'
+import { putAction } from '@/api/manage'
+import { postAction } from '@/api/manage'
+import xianjintan from '../../../components/sxdc/danbao/xianjintan'
+import moment from 'moment'
+
+export default {
+  name: 'xjl',
+  components: { xianjintan },
+  props: ['id', 'zjhm'],
+
+  data() {
+    return {
+      spinning: false,
+      xianJinLiuRu: [], //现金流入
+      xianJinLiuChu: [], //现金流出
+      liuRuYuefen: [], //流入月份
+      liuchuYuefen: [], //流出月份
+      crosshairs: '',
+      xianJinLiuRuZongJi: '',
+      xianjinLiuChuZongJi: '', //现金流入总计
+      label: '',
+      style: '',
+      // 表头
+      columns: [
+        {
+          title: '序号',
+          dataIndex: '',
+          key: 'rowIndex',
+          width: 60,
+          align: 'center',
+          customRender: function(t, r, index) {
+            return parseInt(index) + 1
+          }
+        },
+        {
+          title: '客户名称',
+          align: 'center',
+          dataIndex: 'khmc'
+        },
+        {
+          title: '账号',
+          align: 'center',
+          dataIndex: 'zh'
+        },
+        {
+          title: '交易类型',
+          align: 'center',
+          dataIndex: 'jylx',
+          customRender:function (text) {
+            if(text=='0'){
+              return "流出";
+            }else if(text=="1"){
+              return "流入";
+            } else {
+              return text;
+            }
+          }
+        },
+        {
+          title: '交易金额',
+          align: 'center',
+          dataIndex: 'jyje'
+        },
+        {
+          title: '交易日期',
+          align: 'center',
+          dataIndex: 'jyrq'
+        },
+        {
+          title: '交易时间',
+          align: 'center',
+          dataIndex: 'jysj'
+        },
+        {
+          title: '对方姓名',
+          align: 'center',
+          dataIndex: 'dfxm'
+        },
+        {
+          title: '对方账号',
+          align: 'center',
+          dataIndex: 'dfzh'
+        },
+        {
+          title: '备注',
+          align: 'center',
+          scopedSlots: { customRender: 'taskResult' },
+          dataIndex: 'bz'
+        }
+      ],
+      dataSource:[],
+      ipagination:{
+        current: 1,
+        pageSize: 15,
+        pageSizeOptions: ['15', '30', '50'],
+        showTotal: (total, range) => {
+          return range[0] + "-" + range[1] + " 共" + total + "条"
+        },
+        showQuickJumper: false,
+        showSizeChanger: true,
+        total: 0
+      },
+      loading:false,
+      url: {
+          list: "/dhjcmb/fpdkjcJyls/list",
+      }
+    }
+  },
+  created() {},
+  methods: {
+    handleTableChange(pagination, filters, sorter) {
+      //分页、排序、筛选变化时触发
+      //TODO 筛选
+      if (Object.keys(sorter).length > 0) {
+        this.isorter.column = sorter.field;
+        this.isorter.order = "ascend" == sorter.order ? "asc" : "desc"
+      }
+      console.log( pagination, filters, sorter )
+      this.ipagination = pagination;
+      this.loadData();
+    },
+    loadData(){
+      this.loading = true;
+      let params ={
+        pid:this.id,
+        pageNo: this.ipagination.current,
+        pageSize: this.ipagination.pageSize,
+      }
+      getAction(this.url.list, params).then((res) => {
+        console.log( res )
+        if (res.success) {
+          this.dataSource = res.result.records;
+          this.ipagination.total = res.result.total;
+        }
+        this.loading = false;
+      })
+    },
+    shijitan(e, b) {
+      this.$refs.xianjintana.dakai(e, b)
+    },
+    getxjl() {
+      this.loadData()
+     
+    }
+  }
+}
+</script>
+<style scoped>
+.xianjina {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 93%;
+  margin: 0 auto;
+}
+.xianjin{
+  background-color: #ffffff;
+  margin-top: 20px;
+  padding: 15px;
+}
+</style>

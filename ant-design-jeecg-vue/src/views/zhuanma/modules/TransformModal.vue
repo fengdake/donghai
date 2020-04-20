@@ -1,0 +1,151 @@
+<template>
+  <a-modal
+    :title="title"
+    :width="800"
+    :visible="visible"
+    :confirmLoading="confirmLoading"
+    @ok="handleOk"
+    @cancel="handleCancel"
+    cancelText="关闭">
+    
+    <a-spin :spinning="confirmLoading">
+      <a-form :form="form">
+
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="参数">
+          <a-input placeholder="请输入参数" v-decorator="['parm', {}]" />
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="转码前文本">
+          <a-input placeholder="请输入转码前文本" v-decorator="['text', {}]" />
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="转码后文本">
+          <a-input placeholder="请输入转码后文本" v-decorator="['code', {}]" />
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="所属模块">
+          <!-- <a-input placeholder="请输入所属模块" v-decorator="['module', {}]" /> -->
+          <a-select placeholder="请选择状态" v-model="model.module">
+              <a-select-option
+                v-for="(item,index) in modules"
+                :key="index"
+                :value="item.value"
+              >{{item.name}}</a-select-option>
+          </a-select>
+        </a-form-item>
+		
+      </a-form>
+    </a-spin>
+  </a-modal>
+</template>
+
+<script>
+  import { httpAction } from '@/api/manage'
+  import pick from 'lodash.pick'
+  import moment from "moment"
+
+  export default {
+    name: "TransformModal",
+    data () {
+      return {
+        
+        modules:[{name:'运管模块',value:'1'}],
+        title:"操作",
+        visible: false,
+        model: {},
+        labelCol: {
+          xs: { span: 24 },
+          sm: { span: 5 },
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 16 },
+        },
+
+        confirmLoading: false,
+        form: this.$form.createForm(this),
+        validatorRules:{
+        },
+        url: {
+          add: "/zhuanma/transform/add",
+          edit: "/zhuanma/transform/edit",
+        },
+      }
+    },
+    created () {
+    },
+    methods: {
+      add () {
+        this.edit({});
+      },
+      edit (record) {
+        this.form.resetFields();
+        this.model = Object.assign({}, record);
+        this.visible = true;
+        this.$nextTick(() => {
+          this.form.setFieldsValue(pick(this.model,'text','code','module','parm'))
+		  //时间格式化
+        });
+
+      },
+      close () {
+        this.$emit('close');
+        this.visible = false;
+      },
+      handleOk () {
+        const that = this;
+        // 触发表单验证
+        this.form.validateFields((err, values) => {
+          if (!err) {
+            that.confirmLoading = true;
+            let httpurl = '';
+            let method = '';
+            if(!this.model.id){
+              httpurl+=this.url.add;
+              method = 'post';
+            }else{
+              httpurl+=this.url.edit;
+               method = 'put';
+            }
+            let formData = Object.assign(this.model, values);
+            //时间格式化
+            
+            console.log(formData)
+            httpAction(httpurl,formData,method).then((res)=>{
+              if(res.success){
+                that.$message.success(res.message);
+                that.$emit('ok');
+              }else{
+                that.$message.warning(res.message);
+              }
+            }).finally(() => {
+              that.confirmLoading = false;
+              that.close();
+            })
+
+
+
+          }
+        })
+      },
+      handleCancel () {
+        this.close()
+      },
+
+
+    }
+  }
+</script>
+
+<style lang="less" scoped>
+
+</style>

@@ -1,0 +1,173 @@
+<template>
+  <a-modal
+    :title="title"
+    :width="736"
+    style="height:463px;"
+    :visible="visible"
+    @cancel="handleCancel"
+    @ok="handleOk"
+  >
+    <div class="clearfix">
+      <a-upload
+        :action="uploadAction"
+        listType="picture-card"
+        :multiple="multiple"
+        :headers="headers"
+        :fileList="fileList"
+        @preview="handlePreview"
+        @change="handleChange"
+      >
+        <div>
+          <a-icon type="plus" />
+          <div class="ant-upload-text">上传</div>
+        </div>
+      </a-upload>
+      <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancela">
+        <img alt="example" style="width: 100%" :src="previewImage" />
+      </a-modal>
+    </div>
+  </a-modal>
+</template>
+
+<script>
+import Vue from 'vue'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { httpAction } from '@/api/manage'
+import { getAction } from '@/api/manage'
+import { postAction } from '@/api/manage'
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = error => reject(error)
+  })
+}
+export default {
+  name: 'SxsqDbgsdbfxModal',
+  data() {
+    return {
+      multiple: true, //支持多文件上传
+      mgerver: window._CONFIG['domianURL'],
+      previewVisible: false,
+      title: '上传影像资料',
+      headers: {},
+      url: {
+        fileUpload: window._CONFIG['domianURL'] + '/sys/common/upload'
+      },
+      visible: false,
+      previewImage: '',
+      fileList: []
+    }
+  },
+  props: ['sxid', 'title'],
+  created() {
+    const token = Vue.ls.get(ACCESS_TOKEN)
+    this.headers = { 'X-Access-Token': token }
+  },
+  computed: {
+    // 正常图片上传
+    uploadAction: function() {
+      //console.log('*-*-*-')
+      return this.url.fileUpload
+    }
+  },
+  methods: {
+    handleCancela() {
+      this.previewVisible = false
+    },
+    async handlePreview(file) {
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj)
+      }
+      this.previewImage = file.url || file.preview
+      this.previewVisible = true
+    },
+    handleChange(info) {
+      const status = info.file.status
+      if (status !== 'uploading') {
+      }
+      if (status === 'done') {
+        // this.$message.success(`${info.file.name} 文件上传成功.`);
+        for (let i = 0; i < info.fileList.length; i++) {
+          if (info.fileList[i].response) {
+            if (info.fileList[i].response.message) {
+              if (info.file.response.message == info.fileList[i].response.message) {
+                info.fileList[i].url = window._CONFIG['domianURL'] + '/' + info.file.response.message
+                info.fileList[i].pathurl = info.file.response.message
+                break
+              }
+            }
+          }
+        }
+      } else if (status === 'error') {
+        this.$message.error(`${info.file.name} 文件上传失败.`)
+      }
+
+      this.fileList = info.fileList
+    },
+    //保存模式
+    baocun() {
+      this.$emit('dakaimodel', this.leibie)
+      this.visible = false
+    },
+    dakai(e) {
+      this.fileList = []
+      this.visible = true
+    },
+    close() {
+      this.visible = false
+    },
+    handleOk() {
+      console.log(this.fileList)
+      let that = this
+      let list = ''
+      if (that.fileList.length == 0) {
+        that.$notification.warn({
+          message: '提示',
+          description: '请上传图片',
+          duration: 3
+        })
+        return
+      } else {
+        for (let i = 0; i < that.fileList.length; i++) {
+          list += that.fileList[i].response.message + ','
+        }
+      }
+
+      let obj = {
+        dbid: that.sxid,
+        zllx: that.title,
+        zldz: list
+      }
+      postAction('/business/dbryxzl/saveOrUpdate', obj).then(res => {
+        if (res.success == true) {
+          console.log(res)
+
+          that.$notification.success({
+            message: '成功',
+            description: res.message,
+            duration: 3
+          })
+          that.visible = false
+          that.$emit('getchuju')
+        } else {
+          // 接口失败
+          this.$notification.error({
+            message: '提示',
+            description: res.message,
+            duration: 3
+          })
+        }
+      })
+      // this.visible = false1
+    },
+    handleCancel() {
+      this.visible = false
+    }
+  }
+}
+</script>
+
+<style  scoped>
+</style>

@@ -1,0 +1,580 @@
+a<template>
+  <a-modal
+    :title="title"
+    :width="690"
+    :destroyOnClose="xiaohui"
+    :footer="null"
+    style="height:470px;padding: 0px;"
+    :visible="visible"
+    @cancel="handleCancel"
+    @ok="handleOk"
+  >
+    <a-spin :spinning="confirmLoading">
+      <a-button v-print="'#grdkdcjbnhla'" ghost type="primary" icon="printer">打印</a-button>
+      <div id="grdkdcjbnhla">
+        <h3
+          align="center"
+          style="padding-bottom: 10px;margin-bottom: 0px;margin-top: 0px;"
+        >东海农村商业银行个人贷款调查简表</h3>
+        <p style="display: flex;
+    justify-content: space-between;
+    margin: 0px;">
+          <span>东海县农村信用合作联社管理机构</span>
+        <span>金额单位:万元</span>
+        </p>
+        
+        <table class="mainInfo">
+          <tbody>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 12%" colspan="2" align="center" >申请人姓名</td>
+              <td colspan="2" style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 20%">{{shuju.grxx.sqrxm}}</td>
+              <td colspan="2" align="center" style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 12%">性别</td>
+              <td colspan="2" style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 20%">{{shuju.grxx.xb}}</td>
+              <td colspan="2" align="center" style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 15%">身份证号码</td>
+              <td colspan="2" style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 21%">{{shuju.grxx.sfzjhm}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">户籍地址</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"  colspan="2">{{shuju.grxx.hjdz}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">常住地址</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.grxx.czdz}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">联系方式</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.grxx.lxfs}}</td>
+            </tr>
+             <tr>
+              <td
+                style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"
+                align="center"
+                colspan="2"
+              >
+              
+              </td>
+              <td
+                style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"
+                align="center"
+                colspan="2"
+              >姓名</td>
+              <td
+                style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"
+                align="center"
+                colspan="2"
+              >关系</td>
+              <td
+                style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"
+                align="center"
+                colspan="2"
+              >年龄</td>
+              <td
+                style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"
+                align="center"
+                colspan="2"
+              >健康情况</td>
+              <td
+                style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"
+                align="center"
+                colspan="2"
+              >职业</td>
+            </tr>
+            <tr v-for=" (item,index) in shuju.grxx.jtcy " :key="index">
+              <td
+                style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"
+                align="center"
+                colspan="2"
+              >
+                家庭成员
+              </td>
+              <td
+                style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"
+                align="center"
+                colspan="2"
+              >{{item.xm}}</td>
+              <td
+                style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"
+                align="center"
+                colspan="2"
+              >{{item.gx}}</td>
+              <td
+                style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"
+                align="center"
+                colspan="2"
+              >{{item.nl}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center" colspan="2">{{item.jkzk}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center" colspan="2">{{item.zy}}</td>
+            </tr>
+            <!-- <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" rowspan="3" colspan="2">家庭成员</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">姓名</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">关系</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">年龄</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">健康状况</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">职业</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">李政</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">借款人</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">29</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">健康</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+            </tr> -->
+            <!-- <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+            </tr> -->
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">年度家庭总收入预计</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="10">{{shuju.grxx.ndjtzsryj}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">家庭预警信号</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="10">{{shuju.grxx.jtyjxh}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">备注</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="10"></td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="12" align="center">资产负债简表</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">名称</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">价值</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">备注</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">名称</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">金额</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">月还款额</td>
+            </tr>
+
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">货币资金</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.hbzj}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.hbzjbz}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">房贷</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.fd}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.fdbz}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">房地产</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.fdc}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.fdcbz}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">车贷</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.cd}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.cdbz}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">车辆</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.cl}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.clbz}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">消费贷</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.xfd}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.xfdbz}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">存货</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.ch}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.chbz}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">经营性贷</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.jyxd}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.jyxdbz}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">应收账款</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.yszk}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.yszkbz}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">信用卡</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.xyk}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.xykbz}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">其他资产</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.qtzc}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.qtzcbz}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">其他负债</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.qtfz}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.qtfzbz}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">总资产</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.zzc}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">总负债</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zcfz.zfz}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">对外担保金额</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="10">{{shuju.zcfz.dwdbje}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 8%" rowspan="8" align="center" >申请人收入情况</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 8%" rowspan="2" align="center" >种植</td>
+              <td align="center" style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 8%">农作物品种</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 8%">{{shuju.sqrsr.zznzwpz}}</td>
+              <td align="center" style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 8%">面积</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 8%">{{shuju.sqrsr.zzmj}}</td>
+              <td align="center" style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 8%">产量</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 8%">{{shuju.sqrsr.zzcl}}</td>
+              <td align="center" style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 8%">一年几季</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 8%">{{shuju.sqrsr.zzynjj}}</td>
+              <td align="center" style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 8%">农作物总收入</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;width: 8%">{{shuju.sqrsr.zznzwzsr}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">化肥、农药成本</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.hfnycb}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">幼苗成本</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.ymcb}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">土地租金</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.tdzj}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">雇佣成本</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.zzgycb}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">农作物最终收益</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.nzwzzsy}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center" colspan="2">其他收入</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="9">{{shuju.sqrsr.zzqtsy}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" rowspan="2" align="center">养殖</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">养殖品种</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.yzpz}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">规模</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.yzgm}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">产量</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.yzcl}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">单价</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.yzdj}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">养殖总收入</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.yzzsr}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">幼仔成本</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.yzcb}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">养殖圈舍</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.yzqs}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">饲料成本</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.slcb}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">雇佣成本</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.yzgycb}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">养殖最终收益</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.sqrsr.yzzzsy}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center" colspan="2">其他收入</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="9">{{shuju.sqrsr.yzqtsy}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" rowspan="2" colspan="2" align="center">现金流分析</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">本行</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="7">{{shuju.sqrsr.xjlfxbh}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">他行</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="7">{{shuju.sqrsr.xjlfxth}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" rowspan="3" align="center">信用状况</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2" align="center">个人信用记录评价</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="9">{{shuju.sqrsr.grxyjlpj}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" rowspan="2" align="center">征信情况描述</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">本人</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="10">{{shuju.sqrsr.zxqkmsbr}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">配偶</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="10">{{shuju.sqrsr.zxqkmspo}}</td>
+            </tr>
+            
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" rowspan="9" align="center">授信担保措施</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" rowspan="1" align="center">抵押</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="10"  align="center">
+                <div v-for="(item,index) in shuju.sxdbcss" :key="index">
+                     <div style="display:flex;">
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;" colspan="1" align="center">所有人</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1" >{{item.dysyr}}</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1"  align="center">抵质押物名称</span>
+                      <span style="border-right: 1px solid #999999;font-size: 14px;vertical-align: middle;width:102px;display:flex;align-items: center;
+                          justify-content: center;" colspan="2">{{item.dywmc}}</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1"  align="center">状态</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1" >{{item.zt}}</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1"  align="center">用途</span>
+                      <span style=" font-size: 14px;vertical-align: middle;width:110px;display:flex;align-items: center;
+                        justify-content: center;" >{{item.yt}}</span>
+                      </div>
+                      <!-- 二 0-->
+                      <div style="display:flex;border-top:1px solid #999999">
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;" colspan="1" align="center">面积</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1" >{{item.mj}}</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1"  align="center">房屋坐落</span>
+                      <span style="border-right: 1px solid #999999;font-size: 14px;vertical-align: middle;width:102px;display:flex;align-items: center;
+                          justify-content: center;" colspan="2">{{item.fwzl}}</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1"  align="center">权证号</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1" >{{item.qzh}}</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1"  align="center">评估价值</span>
+                      <span style=" font-size: 14px;vertical-align: middle;width:110px;display:flex;align-items: center;
+                        justify-content: center;" >{{item.pgjz}}</span>
+                      </div>
+                      <!-- 三 -->
+                       <div style="display:flex;border-top:1px solid #999999">
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;" colspan="1" align="center">评估单位</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1" >{{item.pgdw}}</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1"  align="center">本次担保金额</span>
+                      <span style="border-right: 1px solid #999999;font-size: 14px;vertical-align: middle;width:102px;display:flex;align-items: center;
+                          justify-content: center;" colspan="2">{{item.bcdbje}}</span>
+                      <span style="border-right: 1px solid #999999; font-size: 14px;vertical-align: middle;width:51px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1"  align="center">抵质押率%</span>
+                      <span style=" font-size: 14px;vertical-align: middle;width:210px;display:flex;align-items: center;
+                        justify-content: center;"  colspan="1" >{{item.dzyl}}</span>
+                      </div>
+                </div>
+              </td>
+              <!-- <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">所有人</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">抵质押物名称</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">状态</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">用途</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td> -->
+            </tr>
+            <!-- <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">面积</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">房屋坐落</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">权证号</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+              <td align="center">评估价值</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;"></td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">评估单位</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">本次担保金额</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2"></td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">抵质押率%</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="3"></td>
+            </tr> -->
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" rowspan="4" align="center">自然人保证</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">姓名</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.zrrdb.xm}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">身份证号</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zrrdb.sfzh}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">与借款人关系</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;">{{shuju.zrrdb.yjkrgx}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">联系方式</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.zrrdb.lxfs}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">生产经营情况</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="9">{{shuju.zrrdb.scjyqk}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">家庭资产负债情况</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="9">{{shuju.zrrdb.jtzcfzqk}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">征信情况描述</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="9">{{shuju.zrrdb.zxqkms}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">其他担保方式</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="10">{{shuju.zrrdb.qtdbfs}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" rowspan="4" align="center">授信调查意见</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">授信方式</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.sxdcyj.sxfs}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">授信额度</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.sxdcyj.sxed}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">担保方式</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="4">{{shuju.sxdcyj.dbfs}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">用途</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.sxdcyj.yt}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">期限</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.sxdcyj.qx}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">还款方式</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="4">{{shuju.sxdcyj.hkfs}}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">营销人</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.sxdcyj.yxr}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">主查人</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="2">{{shuju.sxdcyj.zcr}}</td>
+              <td style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" align="center">协查人</td>
+              <td  style="border: 1px solid #999999;height: 30px; font-size: 14px;vertical-align: middle;" colspan="4">{{shuju.sxdcyj.xcr}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </a-spin>
+  </a-modal>
+</template>
+
+<script>
+import { postAction } from '@/api/manage'
+import { getAction } from '@/api/manage'
+export default {
+  name: 'grdkdcjbnhl',
+  data() {
+    return {
+      title: '个人贷款调查简表-农户类',
+      shuju:{
+          grxx:{
+            bz: "",
+            czdz: "",
+            hjdz: "",
+            jtcy: [{gx: "", jkzk: "", xm: "", nl: 0, zy: ""}],
+            jtyjxh: "",
+            lxfs: "",
+            ndjtzsryj: "",
+            sfzjhm: "",
+            sqrxm: "",
+            xb: "",
+          },
+          zrrdb:{
+            jtzcfzqk: "",
+            lxfs: "",
+            qtdbfs: "",
+            scjyqk: "",
+            sfzh: "",
+            xm: "",
+            yjkrgx: "",
+            zxqkms: ""
+          },
+          sqrsr:{
+            grxyjlpj: "",
+            hfnycb: "",
+            nzwzzsy: "",
+            slcb: "",
+            tdzj: "",
+            xjlfxbh: "",
+            xjlfxth: "",
+            ymcb: "",
+            yzcb: "",
+            yzcl: "",
+            yzdj: "",
+            yzgm: "",
+            yzgycb: "",
+            yzpz: "",
+            yzqs: "",
+            yzqtsy: "",
+            yzzsr: "",
+            yzzzsy: "",
+            zxqkmsbr: "",
+            zxqkmspo: "",
+            zzcl: "",
+            zzgycb: "",
+            zzmj: "",
+            zznzwpz: "",
+            zznzwzsr: "",
+            zzqtsy: "",
+            zzynjj: ""
+          },
+          sxdbcss:[{jtzcfzqk: "",lxfs: "",qtdbfs: "",scjyqk: "",sfzh: "",xm: "同事",yjkrgx: "",zxqkms: ""}],
+          sxdcyj:{
+            dbfs: "",
+              hkfs: "",
+              qx: "",
+              sxed: "",
+              sxfs: "",
+              xcr: "",
+              yt: "",
+              yxr: "",
+              zcr: ""
+          },
+          zcfz:{
+            cd: "",
+            cdbz: "",
+            ch: "",
+            chbz: "",
+            cl: "",
+            clbz: "",
+            dwdbje: "",
+            fd: "",
+            fdbz: "",
+            fdc: "",
+            fdcbz: "",
+            hbzj: "",
+            hbzjbz: "",
+            jyxd: "",
+            jyxdbz: "",
+            qtfz: "",
+            qtfzbz: "",
+            qtzc: "",
+            qtzcbz: "",
+            xfd: "",
+            xfdbz: "",
+            xyk: "",
+            xykbz: "",
+            yszk: "",
+            yszkbz: "",
+            zfz: "",
+            zzc: "",
+          }
+      },
+      xiaohui: true,
+      confirmLoading: false,
+      visible: false
+    }
+  },
+  created() {},
+  methods: {
+    dakai(id) {
+      let that = this
+      let param = {
+        id: id 
+      }
+      getAction('/business/sxspdyGrdk/nhlQuery', param).then(data => {
+        console.log(data)
+        if (data.success) {
+          this.shuju = data.result
+          this.visible = true
+        } else {
+          that.$notification.error({
+            message: '错误',
+            description: data.message,
+            duration: 3
+          })
+        }
+      })
+    },
+    close() {
+      this.visible = false
+    },
+    handleOk() {
+      this.visible = false
+    },
+    handleCancel() {
+      this.visible = false
+    }
+  }
+}
+</script>
+
+<style  scoped>
+</style>
