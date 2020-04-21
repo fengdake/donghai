@@ -43,7 +43,7 @@
           style="width:97%;box-shadow:0px 4px 10px  rgba(0, 0, 0,0.1);margin-top:30px;height:538px;background-color: #fff;"
         >
           <p class="paiming" style="margin:0px;width:91%;margin:0 auto;">
-            <img src="../../assets/shubao.png" style="margin-right:6px;" />员工违规记分提醒
+            <img src="../../assets/shubao.png" style="margin-right:6px;" />员工违规计分提醒
           </p>
           <a-table
             size="small"
@@ -102,7 +102,7 @@
     <div class="main" style="background-color: #fff;">
       <!-- <div class="mainlist">
         <div class="mainlista" style="width:43%">
-          <p class="paiming">员工违规记分排名</p>
+          <p class="paiming">员工违规计分排名</p>
         <a-table size="small" :columns="columns" :dataSource="dataSource" style=" width:100%; padding:10px 20px;" >
           
         </a-table>
@@ -157,7 +157,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '违规记分',
+    title: '违规计分',
     dataIndex: 'wgjf',
     align: 'center',
     width: 100
@@ -199,7 +199,7 @@ const columnsa = [
     align: 'center'
   },
   {
-    title: '违规记分',
+    title: '违规计分',
     dataIndex: 'wgjf',
     align: 'center',
     width: 100

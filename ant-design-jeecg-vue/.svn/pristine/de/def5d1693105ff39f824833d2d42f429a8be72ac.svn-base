@@ -21,6 +21,24 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
+          label="报审人">
+          <a-input placeholder="请输入报审人" v-decorator="['createByName', {}]" :disabled="dis"/>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="报审机构">
+          <a-input placeholder="请输入机构" v-decorator="['bsjgmc', {}]" :disabled="dis"/>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="报审时间">
+          <a-input placeholder="请输入时间" v-decorator="['createTime', {}]" :disabled="dis"/>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
           label="合同名称">
           <a-input placeholder="请输入合同名称" v-decorator="['htmc', {}]" :disabled="dis"/>
         </a-form-item>
@@ -52,7 +70,29 @@
             </p>
           </a-upload-dragger>
         </a-form-item>
-		
+
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="合同主要条款">
+          <a-textarea
+            placeholder
+            :autosize="{ minRows: 8, maxRows: 6 }"
+            v-decorator="['htzytk', {}]"
+          />
+        </a-form-item>
+
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="合规审查原则">
+          <a-textarea
+            placeholder
+            :autosize="{ minRows: 8, maxRows: 6 }"
+            v-decorator="['hgscyz', {}]"
+          />
+        </a-form-item>
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="审查建议">
+          <a-textarea
+            placeholder
+            :autosize="{ minRows: 8, maxRows: 6 }"
+            v-decorator="['scjy', {}]"
+          />
+        </a-form-item>
       </a-form>
     </a-spin>
   </a-modal>
@@ -180,6 +220,10 @@
         this.dis=false
       },
       edit (record) {
+        if(null == record.hgscyz || ''==record.hgscyz)
+        {
+          record.hgscyz = '合规风险部仅审查送审文件的合法性及合规性，而不对业务和管理的可行性、可操作性、相关材料的真实性、操作风险控制及相关专业技术标准负责。'
+        }
         this.dis="disabled"
         this.form.resetFields();
         this.model = Object.assign({}, record);
@@ -197,7 +241,7 @@
         this.fileList = this.defaultFileList;
         this.visible = true;
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model,'bssx','scmd','scyq','qtbj','xgzl','htmc','htbh'))
+          this.form.setFieldsValue(pick(this.model,'bssx','scmd','scyq','qtbj','xgzl','htmc','htbh','htzytk','hgscyz','scjy','createTime','createByName','bsjgmc'))
 		  //时间格式化
         });
 
@@ -207,21 +251,31 @@
         this.visible = false;
       },
       handleOk () {
-
-        if (this.dis == 'disabled')
+        if (this.title == '查看')
         {
           this.close();
           return;
         }
 
         let wenjian = ''
-      for (let i = 0; i < this.fileList.length; i++) {
-        if (wenjian == '') {
-          wenjian = this.fileList[i].response.message
-        } else {
-          wenjian = wenjian + ',' + this.fileList[i].response.message
+        let dz = ''
+        for (let i = 0; i < this.fileList.length; i++) {
+
+          if(this.fileList[i].response != null && this.fileList[i].response.message != null)
+          {
+            dz = this.fileList[i].response.message
+          }
+          else
+          {
+            dz = this.fileList[i].pathurl
+          }
+
+          if (wenjian == '') {
+            wenjian = dz
+          } else {
+            wenjian = wenjian + ',' + dz
+          }
         }
-      }
         const that = this;
         // 触发表单验证
         this.form.validateFields((err, values) => {

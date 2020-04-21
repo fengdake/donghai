@@ -25,8 +25,8 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          label="违规积分">
-          <a-input placeholder="请输入违规积分" v-decorator="['wgjf', {}]" />
+          label="违规记分">
+          <a-input placeholder="请输入违规记分" v-decorator="['wgjf', {}]" />
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
